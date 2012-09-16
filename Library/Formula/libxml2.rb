@@ -5,6 +5,8 @@ class Libxml2 < Formula
   url 'ftp://xmlsoft.org/libxml2/libxml2-2.8.0.tar.gz'
   sha256 'f2e2d0e322685193d1affec83b21dc05d599e17a7306d7b90de95bb5b9ac622a'
 
+  depends_on 'python'
+
   keg_only :provided_by_osx
 
   fails_with :llvm do
@@ -13,17 +15,19 @@ class Libxml2 < Formula
   end
 
   option :universal
-  option 'with-python', 'Compile the libxml2 Python 2.x modules'
+  #option 'with-python', 'Compile the libxml2 Python 2.x modules'
 
   def install
     ENV.universal_binary if build.universal?
-
-    system "./configure", "--prefix=#{prefix}", "--without-python"
+    
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
+    system "./configure", "--prefix=#{prefix}", "--with-python"
     system "make"
     ENV.deparallelize
     system "make install"
 
-    if build.include? 'with-python'
+    if true #build.include? 'with-python'
       # Build Python bindings manually
       cd 'python' do
         python_lib = lib/which_python/'site-packages'
