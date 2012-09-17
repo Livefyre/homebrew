@@ -37,9 +37,10 @@ user = #{ENV['USER']}
   end
 
   def mysql
+    hoststr = `hostname`.strip
     return <<-EOS
 [program:mysql]
-command = /usr/local/bin/mysqld_safe
+command = /usr/local/share/python/pidproxy /usr/local/var/mysql/#{hoststr}.pid /usr/local/bin/mysqld_safe
 process_name = mysql
 directory = /usr/local/var
 priority = 5

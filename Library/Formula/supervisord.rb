@@ -17,7 +17,7 @@ class Supervisord < Formula
     end
 
     ENV.prepend 'PATH', python_share, ':'
-    (etc + 'supervisord.conf').write supervisord_conf
+    (share + 'supervisord.conf').write supervisord_conf
     (etc + 'supervisor/conf.d').mkpath
     system "python", "setup.py", "install"
   end
@@ -58,7 +58,7 @@ class Supervisord < Formula
   <key>ProgramArguments</key>
   <array>
     <string>#{python_share}/supervisord</string>
-    <string>--configuration=#{etc}/supervisord.conf</string>
+    <string>--configuration=#{share}/supervisord.conf</string>
     <string>-n</string>
   </array>
   <key>RunAtLoad</key>
