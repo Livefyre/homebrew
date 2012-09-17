@@ -19,6 +19,15 @@ class Lfservices < Formula
     (etc + 'supervisor/conf.d/lfservices/mongo.conf').write mongo
     (etc + 'supervisor/conf.d/lfservices/mysql.conf').write mysql
     (etc + 'supervisor/conf.d/lfservices/selenium.conf').write selenium
+    (etc + 'supervisor/conf.d/lfservices/group.conf').write program_group
+  end
+
+  def program_group
+    return <<-EOS
+[group:services]
+programs=mysql,mongo,redis,elasticsearch
+priority=1
+    EOS
   end
 
   def selenium
