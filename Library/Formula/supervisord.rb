@@ -104,7 +104,7 @@ EOS
     supervisor.rpcinterface_factory=supervisor.rpcinterface:make_main_rpcinterface
 
     [include]
-    files=#{etc}/supervisor/conf.d/*.conf
+    files=#{etc}/supervisor/conf.d/*.conf #{etc}/supervisor/conf.d/*/*.conf
     EOS
   end
 
