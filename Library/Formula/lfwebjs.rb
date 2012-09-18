@@ -19,6 +19,7 @@ class Lfwebjs < Formula
     dir = (etc + 'supervisor/conf.d/lfwebjs')
     dir.mkpath
     (dir + 'proxy.conf').write proxy
+    (dir + 'adv_proxy.conf').write adv_proxy
     (dir + 'plovr.conf').write plovr
     (dir + 'conv_asset_server.conf').write conv_asset_server
     (dir + 'conv_sample_server.conf').write conv_sample_server
@@ -70,7 +71,22 @@ autorestart = true
 autostart = true
 startsecs = 5
 startretries = 10
-environment = PATH="#{HOMEBREW_PREFIX}/share/rpm/bin:$PATH"
+environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
+    EOS
+  end
+
+  def adv_proxy
+    return <<-EOS
+[program:adv_proxy]
+command = /usr/local/bin/node #{ENV['HOME']}/dev/lfdev/proxy/proxy.js
+process_name = adv_proxy
+directory = #{libexec}
+priority = 500
+autorestart = true
+autostart = true
+startsecs = 5
+startretries = 10
+environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
     EOS
   end
 
@@ -92,9 +108,9 @@ user = #{ENV['USER']}
   def conv_sample_server
     return <<-EOS
 [program:conv_sample_server]
-command = #{ENV['HOME']}/dev/lfwebjs/lfconv/bin/asset_server 9112
+command = python -m SimpleHTTPServer 9113
 process_name = conv_sample_server
-directory = /usr/local/var
+directory = #{ENV['HOME']}/dev/lfwebjs/lfconv/samples
 priority = 500
 autorestart = true
 autostart = true
