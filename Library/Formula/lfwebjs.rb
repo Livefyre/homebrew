@@ -62,7 +62,7 @@ priority=500
   def proxy
     return <<-EOS
 [program:proxy]
-command = /usr/local/bin/node proxy.js
+command = #{HOMEBREW_PREFIX}/bin/node proxy.js
 process_name = proxy
 directory = #{libexec}
 priority = 500
@@ -70,15 +70,16 @@ autorestart = true
 autostart = true
 startsecs = 5
 startretries = 10
+environment = PATH="#{HOMEBREW_PREFIX}/share/rpm/bin:$PATH"
     EOS
   end
 
   def plovr
     return <<-EOS
 [program:plovr]
-command = /usr/local/bin/plovr serve --port 9111 #{ENV['HOME']}/dev/lfwebjs/lfconv/parts/plovr/plovr.dev.js
+command = #{HOMEBREW_PREFIX}/bin/plovr serve --port 9111 #{ENV['HOME']}/dev/lfwebjs/lfconv/parts/plovr/plovr.dev.js
 process_name = plovr
-directory = /usr/local/var
+directory = #{var}
 priority = 500
 autorestart = true
 autostart = true
@@ -93,7 +94,7 @@ user = #{ENV['USER']}
 [program:conv_asset_server]
 command = #{ENV['HOME']}/dev/lfwebjs/lfconv/bin/asset_server 9112
 process_name = conv_asset_server
-directory = /usr/local/var
+directory = #{var}
 priority = 500
 autorestart = true
 autostart = true
@@ -108,7 +109,7 @@ user = #{ENV['USER']}
 [program:admin_asset_server]
 command = #{ENV['HOME']}/dev/lfwebjs/lfadmin/bin/asset_server 9101
 process_name = admin_asset_server
-directory = /usr/local/var
+directory = #{var}
 priority = 500
 autorestart = true
 autostart = true
