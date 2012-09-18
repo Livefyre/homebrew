@@ -5,7 +5,6 @@ class Lfwebjs < Formula
   #head 'git@github.com:Livefyre/lfdj.git'
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
   version 'dev'
-  depends_on 'node'
   depends_on 'plovr'
   depends_on 'supervisord'
   depends_on 'lfpython'
@@ -22,6 +21,7 @@ class Lfwebjs < Formula
     (dir + 'proxy.conf').write proxy
     (dir + 'plovr.conf').write plovr
     (dir + 'conv_asset_server.conf').write conv_asset_server
+    (dir + 'conv_sample_server.conf').write conv_sample_server
     (dir + 'admin_asset_server.conf').write admin_asset_server
     (dir + 'group.conf').write program_group
   end
@@ -50,7 +50,7 @@ programs=proxy
 priority=500
 
 [group:widget]
-programs=plovr,conv_asset_server
+programs=plovr,conv_asset_server,conv_sample_server
 priority=500
 
 [group:admin]
@@ -80,6 +80,21 @@ environment = PATH="#{HOMEBREW_PREFIX}/share/rpm/bin:$PATH"
 command = #{HOMEBREW_PREFIX}/bin/plovr serve --port 9111 #{ENV['HOME']}/dev/lfwebjs/lfconv/parts/plovr/plovr.dev.js
 process_name = plovr
 directory = #{var}
+priority = 500
+autorestart = true
+autostart = true
+startsecs = 5
+startretries = 10
+user = #{ENV['USER']}
+    EOS
+  end
+
+  def conv_sample_server
+    return <<-EOS
+[program:conv_sample_server]
+command = #{ENV['HOME']}/dev/lfwebjs/lfconv/bin/asset_server 9112
+process_name = conv_sample_server
+directory = /usr/local/var
 priority = 500
 autorestart = true
 autostart = true
