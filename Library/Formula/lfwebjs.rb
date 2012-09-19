@@ -21,6 +21,7 @@ class Lfwebjs < Formula
     (dir + 'proxy.conf').write proxy
     (dir + 'adv_proxy.conf').write adv_proxy
     (dir + 'plovr.conf').write plovr
+    (dir + 'servers.conf').write servers
     (dir + 'conv_asset_server.conf').write conv_asset_server
     (dir + 'conv_sample_server.conf').write conv_sample_server
     (dir + 'admin_asset_server.conf').write admin_asset_server
@@ -57,7 +58,31 @@ priority=500
 [group:admin]
 programs=admin_asset_server
 priority=500
+
+[group:sv]
+programs=bootstrap,admin,search,write
+priority=999
     EOS
+  end
+
+  def servers
+    a = []
+    ['admin', 'bootstrap', 'search', 'write'].each_with_index do |pn, i|
+      a.push <<-EOS.undent
+        [program:#{pn}]
+        command = #{ENV['HOME']}/dev/lfdj/lf#{pn}/bin/django run_gunicorn --bind=127.0.0.1:1111#{i}
+        redirect_stderr=True
+        process_name = #{pn}
+        directory = #{ENV['HOME']}/dev/lfdj/lf#{pn}
+        priority = 999
+        autorestart = false
+        autostart = false
+        stopsignal=KILL
+        killasgroup=true
+        user = #{ENV['USER']}
+      EOS
+    end
+    return a.join("\n")
   end
 
   def proxy
