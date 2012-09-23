@@ -22,6 +22,7 @@ end
 
 class Lfpython< Formula
   depends_on 'python'
+  depends_on 'protobuf'
 
   homepage 'http://github.com/Livefyre/lfdj'
   #head 'git@github.com:Livefyre/lfdj.git'
