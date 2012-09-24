@@ -65,6 +65,11 @@ priority=999
     EOS
   end
 
+  # Adds lfadmin at port 11110
+  # Adds lfbootstrap at port 11111
+  # Adds lfsearch at port 11112
+  # Adds lfwrite at port 11113
+  # !! Sync with https://github.com/Livefyre/lfdev/blob/master/proxy/proxy.js
   def servers
     a = []
     ['admin', 'bootstrap', 'search', 'write'].each_with_index do |pn, i|
