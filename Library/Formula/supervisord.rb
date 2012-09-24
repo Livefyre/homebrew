@@ -19,6 +19,7 @@ class Supervisord < Formula
     ENV.prepend 'PATH', python_share, ':'
     (share + 'supervisord.conf').write supervisord_conf
     (etc + 'supervisor/conf.d').mkpath
+    (var + '/log/livefyre').mkpath
     system "python", "setup.py", "install"
   end
 
@@ -80,7 +81,7 @@ EOS
 
   def supervisord_conf; <<-EOS.undent
     [supervisord]
-    childlogdir = #{var}/log
+    childlogdir = #{var}/log/livefyre
     logfile = #{var}/log/supervisord.log
     logfile_maxbytes = 50MB
     logfile_backups = 1

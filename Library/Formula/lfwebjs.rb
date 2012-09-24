@@ -12,6 +12,10 @@ class Lfwebjs < Formula
 
   def install
     dir = (etc + 'supervisor/conf.d/lfwebjs')
+    if File.directory? dir
+      puts "ERROR: You need to run `rm -rf " + dir + '`'
+      # rm (dir) # TODO(gregp)...
+    end
     dir.mkpath
     (dir + 'proxy.conf').write proxy
     (dir + 'conv_plovr_raw.conf').write conv_plovr_raw
@@ -31,6 +35,10 @@ priority=500
 
 [group:widget]
 programs=conv_plovr_raw,conv_asset_server,conv_sample_server
+priority=500
+
+[group:widget_alts]
+programs=conv_plovr_dev
 priority=500
 
 [group:admin]
@@ -72,15 +80,16 @@ priority=999
   def proxy
     return <<-EOS
 [program:proxy]
-command = /usr/local/bin/node #{ENV['HOME']}/dev/lfdev/proxy/proxy.js
+command = #{HOMEBREW_PREFIX}/bin/node proxy.js
+directory = #{ENV['HOME']}/dev/lfdev/proxy
 process_name = proxy
-directory = #{libexec}
 priority = 500
 autorestart = true
 autostart = true
 startsecs = 5
 startretries = 10
 environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
+user = root
     EOS
   end
 
