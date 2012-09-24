@@ -9,12 +9,11 @@ class Lfservices < Formula
   depends_on 'mongodb'
   depends_on 'redis'
   depends_on 'elasticsearch'
+  depends_on 'elasticsearchhead'
   depends_on 'supervisord'
   depends_on 'selenium-server-standalone'
 
   def install
-    # install elasticsearch-head
-    system "/usr/local/Cellar/elasticsearch/#{Elasticsearch.new.version}/bin/plugin -install mobz/elasticsearch-head"
     (etc + 'supervisor/conf.d/lfservices').mkpath
     (etc + 'supervisor/conf.d/lfservices/es.conf').write elasticsearch
     (etc + 'supervisor/conf.d/lfservices/redis.conf').write redis
@@ -33,9 +32,10 @@ priority=1
   end
 
   def selenium
+    v = SeleniumServerStandalone.new.version
     return <<-EOS
 [program:selenium]
-command = /usr/bin/java -jar /usr/local/Cellar/selenium-server-standalone/2.25.0/selenium-server-standalone-2.25.0.jar -port 4444
+command = /usr/bin/java -jar /usr/local/Cellar/selenium-server-standalone/#{v}/selenium-server-standalone-#{v}.jar -port 4444
 process_name = selenium
 directory = /usr/local/var
 priority = 5
@@ -91,9 +91,10 @@ user = #{ENV['USER']}
   end
 
   def elasticsearch
+    v = Elasticsearch.new.version
     return <<-EOS
 [program:elasticsearch]
-command = /usr/local/bin/elasticsearch -f -D es.config=/usr/local/Cellar/elasticsearch/0.19.9/config/elasticsearch.yml
+command = /usr/local/bin/elasticsearch -f -D es.config=/usr/local/Cellar/elasticsearch/#{v}/config/elasticsearch.yml
 process_name = elasticsearch
 directory = /usr/local/var
 priority = 5
