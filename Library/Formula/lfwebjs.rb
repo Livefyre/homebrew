@@ -11,38 +11,16 @@ class Lfwebjs < Formula
   depends_on 'lfservices'
 
   def install
-    system "npm", "install", "http-proxy"
-    libexec.install "node_modules"
-
-    (libexec + 'proxy.js').write proxy_js
-
     dir = (etc + 'supervisor/conf.d/lfwebjs')
     dir.mkpath
     (dir + 'proxy.conf').write proxy
-    (dir + 'adv_proxy.conf').write adv_proxy
-    (dir + 'plovr.conf').write plovr
+    (dir + 'conv_plovr_raw.conf').write conv_plovr_raw
+    (dir + 'conv_plovr_dev.conf').write conv_plovr_dev
     (dir + 'servers.conf').write servers
     (dir + 'conv_asset_server.conf').write conv_asset_server
     (dir + 'conv_sample_server.conf').write conv_sample_server
     (dir + 'admin_asset_server.conf').write admin_asset_server
     (dir + 'group.conf').write program_group
-  end
-
-  def proxy_js
-    return <<-EOS
-var httpProxy = require('http-proxy');
-
-httpProxy.createServer({
- hostnameOnly: false,
- router: {
-   'widget.localhost': 'localhost:9111',
-   'admin.localhost': 'localhost:9001',
-   'admin.localhost/site_media': 'localhost:9101',
-   'admin.localhost/admin': 'localhost:9101',
-   'admin.localhost/wjs': 'localhost:9102'
- }
-}).listen(80);
-    EOS
   end
 
   def program_group
@@ -52,7 +30,7 @@ programs=proxy
 priority=500
 
 [group:widget]
-programs=plovr,conv_asset_server,conv_sample_server
+programs=conv_plovr_raw,conv_asset_server,conv_sample_server
 priority=500
 
 [group:admin]
@@ -94,7 +72,7 @@ priority=999
   def proxy
     return <<-EOS
 [program:proxy]
-command = #{HOMEBREW_PREFIX}/bin/node proxy.js
+command = /usr/local/bin/node #{ENV['HOME']}/dev/lfdev/proxy/proxy.js
 process_name = proxy
 directory = #{libexec}
 priority = 500
@@ -106,30 +84,30 @@ environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
     EOS
   end
 
-  def adv_proxy
+  def conv_plovr_raw
     return <<-EOS
-[program:adv_proxy]
-command = /usr/local/bin/node #{ENV['HOME']}/dev/lfdev/proxy/proxy.js
-process_name = adv_proxy
-directory = #{libexec}
+[program:conv_plovr_raw]
+command = #{HOMEBREW_PREFIX}/bin/plovr serve --port 9111 #{ENV['HOME']}/dev/lfwebjs/lfconv/parts/plovr/plovr.raw.js
+process_name = conv_plovr_raw
+directory = #{var}
 priority = 500
 autorestart = true
 autostart = true
 startsecs = 5
 startretries = 10
-environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
+user = #{ENV['USER']}
     EOS
   end
 
-  def plovr
+  def conv_plovr_dev
     return <<-EOS
-[program:plovr]
+[program:conv_plovr_dev]
 command = #{HOMEBREW_PREFIX}/bin/plovr serve --port 9111 #{ENV['HOME']}/dev/lfwebjs/lfconv/parts/plovr/plovr.dev.js
-process_name = plovr
+process_name = conv_plovr_dev
 directory = #{var}
 priority = 500
-autorestart = true
-autostart = true
+autorestart = false
+autostart = false
 startsecs = 5
 startretries = 10
 user = #{ENV['USER']}
