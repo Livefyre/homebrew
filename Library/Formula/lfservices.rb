@@ -13,6 +13,8 @@ class Lfservices < Formula
   depends_on 'selenium-server-standalone'
 
   def install
+    # install elasticsearch-head
+    system "/usr/local/Cellar/elasticsearch/#{Elasticsearch.new.version}/bin/plugin -install mobz/elasticsearch-head"
     (etc + 'supervisor/conf.d/lfservices').mkpath
     (etc + 'supervisor/conf.d/lfservices/es.conf').write elasticsearch
     (etc + 'supervisor/conf.d/lfservices/redis.conf').write redis
