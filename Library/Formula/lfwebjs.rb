@@ -89,7 +89,6 @@ autostart = true
 startsecs = 5
 startretries = 10
 environment = PATH="#{HOMEBREW_PREFIX}/share/npm/bin:$PATH"
-user = root
     EOS
   end
 
