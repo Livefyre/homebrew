@@ -65,7 +65,7 @@ class Supervisord < Formula
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
-  <false/>
+  <true/>
   <key>UserName</key>
   <string>root</string>
   <key>WorkingDirectory</key>
