@@ -80,6 +80,7 @@ priority=999
         stopsignal=KILL
         killasgroup=true
         user = #{ENV['USER']}
+        environment = USER=#{ENV['USER']}
       EOS
     end
     return a.join("\n")
