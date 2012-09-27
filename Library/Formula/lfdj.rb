@@ -14,6 +14,7 @@ class Lfdj < Formula
     (bin + 'refresh_mysql_db').write <<-EOS.undent
       #!/bin/bash -ex
       cd #{ENV['HOME']}/dev/lfdj/lfcore
+      supervisorctl stop sv:* || true
       mysql -uroot -p12345 -e "drop database if exists lfdj;" 
       mysql -uroot -p12345 -e "CREATE DATABASE lfdj char set utf8;" 
       mysql -uroot -p12345 lfdj < lfcore/domain/sql/domain.sql

@@ -2,20 +2,41 @@ require 'formula'
 
 class Lfstream < Formula
   homepage 'http://github.com/Livefyre/perseids'
-  #head 'git@github.com:Livefyre/lfdj.git'
-  url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
-  version 'dev'
+  url 'http://packages.livefyre.com/buildout/packages/osx/perseids-1.0.0-Alpha1.zip'
+  version '1.0.0-Alpha1'
   depends_on 'supervisord'
   depends_on 'lfpython'
   depends_on 'lfservices'
-  depends_on 'maven'
-  depends_on 'java7'
 
   def install
     dir = (etc + 'supervisor/conf.d/lfstream')
     dir.mkpath
     (dir + 'servers.conf').write servers
     (dir + 'group.conf').write program_group
+    libexec.install Dir["*.jar", "*.xml"]
+    (bin + 'runserver').write <<-EOS.undent
+      #!/bin/bash
+      dev_root=#{ENV['HOME']}/dev/perseids
+      dev_script=bin/runserver.sh
+      if [ -e "$dev_root/$dev_script" ]; then
+         echo "Using development version"
+         cd $dev_root
+         exec $dev_script
+         exit 0
+      fi
+      echo "Using packaged jar"
+      exec java -server \
+        -XX:+UseBiasedLocking -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -XX:+HeapDumpOnOutOfMemoryError \
+        -Dperseids.returnAddr=redis://127.0.0.1:6378/0 \
+        -Dperseids.redisQueueHost=redis://127.0.0.1:6379/0 \
+        -Dperseids.redisLivecountHost=redis://127.0.0.1:6379/0 \
+        -Dperseids.numWorkers=1 \
+        -Dperseids.statsdAddr=statsd://107.23.16.37:8125 \
+        -Dperseids.statsdPrefix=`hostname | sed -e 's/\./-/'` \
+        -Dlogback.configurationFile=#{libexec}/logback.xml \
+        -cp #{libexec}/perseids-#{version}-jar-with-dependencies.jar \
+         com.livefyre.perseids.server.Run
+    EOS
   end
 
   def program_group
@@ -29,10 +50,10 @@ priority=500
   def servers
     return <<-EOS
 [program:ct]
-command = #{ENV['USER']}/dev/perseids/bin/runserver.sh
+command = #{bin}/runserver
 redirect_stderr=True
 process_name = ct
-directory = #{ENV['USER']}/dev/perseids
+directory = #{prefix}
 priority = 999
 autorestart = false
 autostart = false
@@ -41,28 +62,28 @@ killasgroup = true
 user = #{ENV['USER']}
 
 [program:mq2]
-command = #{ENV['USER']}/dev/lfdj/lfbootstrap/bin/django run_mqueue_v2 --workers=1 --reqlimit=100000 --disable-wal
+command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue_v2 --workers=1 --reqlimit=100000 --disable-wal
 redirect_stderr=True
 process_name = mq2
-directory = #{ENV['USER']}/dev/lfdj/lfbootstrap
+directory = #{ENV['HOME']}/dev/lfdj/lfbootstrap
 priority = 999
 autorestart = false
 autostart = false
 stopsignal = KILL
 killasgroup = true
-user = nino
+user = #{ENV['USER']}
 
 [program:mq]
-command = #{ENV['USER']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal
+command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal
 redirect_stderr=True
 process_name = mq
-directory = #{ENV['USER']}/dev/lfdj/lfbootstrap
+directory = #{ENV['HOME']}/dev/lfdj/lfbootstrap
 priority = 999
 autorestart = false
 autostart = false
 stopsignal = KILL
 killasgroup = true
-user = nino
+user = #{ENV['USER']}
     EOS
   end
 end
