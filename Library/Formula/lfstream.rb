@@ -76,7 +76,7 @@ user = #{ENV['USER']}
 environment = USER=#{ENV['USER']}
 
 [program:mq]
-command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal
+command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal --redishost=localhost
 redirect_stderr=True
 process_name = mq
 directory = #{ENV['HOME']}/dev/lfdj/lfbootstrap
