@@ -60,6 +60,7 @@ autostart = false
 stopsignal = KILL
 killasgroup = true
 user = #{ENV['USER']}
+environment = USER=#{ENV['USER']}
 
 [program:mq2]
 command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue_v2 --workers=1 --reqlimit=100000 --disable-wal
@@ -72,6 +73,7 @@ autostart = false
 stopsignal = KILL
 killasgroup = true
 user = #{ENV['USER']}
+environment = USER=#{ENV['USER']}
 
 [program:mq]
 command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal
@@ -84,6 +86,7 @@ autostart = false
 stopsignal = KILL
 killasgroup = true
 user = #{ENV['USER']}
+environment = USER=#{ENV['USER']}
     EOS
   end
 end
