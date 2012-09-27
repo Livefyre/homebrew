@@ -13,7 +13,7 @@ class Lfwebjs < Formula
   def install
     dir = (etc + 'supervisor/conf.d/lfwebjs')
     if File.directory? dir
-      puts "ERROR: You need to run `rm -rf " + dir + '`'
+      onoe "You need to run `rm -rf " + dir + '`'
       # rm (dir) # TODO(gregp)...
     end
     dir.mkpath
