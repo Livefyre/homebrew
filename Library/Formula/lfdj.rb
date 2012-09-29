@@ -36,6 +36,7 @@ class Lfdj < Formula
     EOS
     (bin + 'refresh_all').write <<-EOS.undent
       #!/bin/bash -ex
+      redis-cli flushdb
       #{bin}/refresh_mongo_db
       #{bin}/refresh_mysql_db
       #{bin}/refresh_es
