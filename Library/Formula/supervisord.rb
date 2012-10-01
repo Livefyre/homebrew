@@ -19,7 +19,7 @@ class Supervisord < Formula
     ENV.prepend 'PATH', python_share, ':'
     (share + 'supervisord.conf').write supervisord_conf
     (etc + 'supervisor/conf.d').mkpath
-    (var + '/log/livefyre').mkpath
+    (var + 'log/livefyre').mkpath
     system "python", "setup.py", "install"
   end
 
