@@ -14,13 +14,15 @@ class Lfservices < Formula
   depends_on 'selenium-server-standalone'
 
   def install
-    (etc + 'supervisor/conf.d/lfservices').mkpath
-    (etc + 'supervisor/conf.d/lfservices/es.conf').write elasticsearch
-    (etc + 'supervisor/conf.d/lfservices/redis.conf').write redis
-    (etc + 'supervisor/conf.d/lfservices/mongo.conf').write mongo
-    (etc + 'supervisor/conf.d/lfservices/mysql.conf').write mysql
-    (etc + 'supervisor/conf.d/lfservices/selenium.conf').write selenium
-    (etc + 'supervisor/conf.d/lfservices/group.conf').write program_group
+    dir = (prefix + 'sconf.lfservices')
+    dir.mkpath
+    (dir + 'es.conf').write elasticsearch
+    (dir + 'redis.conf').write redis
+    (dir + 'mongo.conf').write mongo
+    (dir + 'mysql.conf').write mysql
+    (dir + 'selenium.conf').write selenium
+    (dir + 'group.conf').write program_group
+    share.install dir
   end
 
   def program_group

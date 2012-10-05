@@ -25,8 +25,8 @@ class Supervisord < Formula
 
   def caveats
     bn = plist_path.basename
-    la = Pathname.new("Library/LaunchAgents")
-    prettypath = "/Library/LaunchAgents/#{bn}"
+    la = Pathname.new("Library/LaunchDaemons")
+    prettypath = "/Library/LaunchDaemons/#{bn}"
     domain = plist_path.basename('.plist')
     load = "launchctl load -w #{prettypath}"
     s = []
@@ -35,7 +35,7 @@ class Supervisord < Formula
     # occurs before the link step of installation
     if not (la/bn).file?
       s << "To have launchd start #{name} at login:"
-      s << "    sudo cp #{plist_path} /Library/LaunchAgents/#{bn}"
+      s << "    sudo cp #{plist_path} /Library/LaunchDaemons/#{bn}"
       s << "Then to load #{name} now:"
       s << "    sudo #{load}"
     elsif Kernel.system "/bin/launchctl list #{domain} &>/dev/null"
@@ -105,7 +105,7 @@ EOS
     supervisor.rpcinterface_factory=supervisor.rpcinterface:make_main_rpcinterface
 
     [include]
-    files=#{etc}/supervisor/conf.d/*.conf #{etc}/supervisor/conf.d/*/*.conf
+    files=#{etc}/supervisor/conf.d/*.conf #{HOMEBREW_PREFIX}/share/sconf.*/*.conf
     EOS
   end
 

@@ -7,10 +7,11 @@ class Lflivecount < Formula
   depends_on 'supervisord'
 
   def install
-    dir = (etc + 'supervisor/conf.d/lflc')
+    dir = (prefix + 'sconf.lflc')
     dir.mkpath
     (dir + 'servers.conf').write servers
     (dir + 'group.conf').write program_group
+    share.install dir
     libexec.install Dir["*.jar", "*.xml"]
     (bin + 'runlc').write <<-EOS.undent
       #!/bin/bash

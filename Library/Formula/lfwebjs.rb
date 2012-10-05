@@ -12,12 +12,7 @@ class Lfwebjs < Formula
   depends_on 'lfservices'
 
   def install
-    dir = (etc + 'supervisor/conf.d/lfwebjs')
-    if File.directory? dir
-      onoe "You need to run `rm -rf " + dir + '`'
-      # rm (dir) # TODO(gregp)...
-    end
-    system "npm install http-proxy"
+    dir = (etc + 'sconf.lfwebjs')
     dir.mkpath
     (dir + 'proxy.conf').write proxy
     (dir + 'conv_plovr_raw.conf').write conv_plovr_raw
@@ -27,6 +22,7 @@ class Lfwebjs < Formula
     (dir + 'conv_sample_server.conf').write conv_sample_server
     (dir + 'admin_asset_server.conf').write admin_asset_server
     (dir + 'group.conf').write program_group
+    share.install dir
   end
 
   def program_group

@@ -9,11 +9,12 @@ class Lfstream < Formula
   depends_on 'lfservices'
 
   def install
-    dir = (etc + 'supervisor/conf.d/lfstream')
+    dir = (prefix + 'sconf.lfstream')
     dir.mkpath
     (dir + 'servers.conf').write servers
     (dir + 'group.conf').write program_group
     libexec.install Dir["*.jar", "*.xml"]
+    share.install dir
     (bin + 'runserver').write <<-EOS.undent
       #!/bin/bash
       dev_root=#{ENV['HOME']}/dev/perseids
