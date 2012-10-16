@@ -40,6 +40,11 @@ class Lfdj < Formula
       #{bin}/refresh_mongo_db
       #{bin}/refresh_mysql_db
       #{bin}/refresh_es
+      #{bin}/refresh_bs_s3
+    EOS
+    (bin + 'refresh_bs_s3').write <<-EOS.undent
+      #!/bin/bash -ex
+      echo "assert settings.BOOTSTRAP_S3_SETTINGS['prefix'] == '/$USER'; from lfcore.v2.fulfillment.util import S3Api; S3Api().empty_bucket(settings.BOOTSTRAP_S3_SETTINGS['bucket_name'], settings.BOOTSTRAP_S3_SETTINGS['prefix'])" | $HOME/dev/lfdj/lfdrone/bin/django shell_plus
     EOS
     (bin + 'lfuse').write <<-EOS.undent
       #!/bin/bash
