@@ -6,7 +6,6 @@ class Lfwebjs < Formula
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
   version 'dev'
   depends_on 'plovr'
-  depends_on 'node'
   depends_on 'supervisord'
   depends_on 'lfpython'
   depends_on 'lfservices'
