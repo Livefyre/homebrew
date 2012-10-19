@@ -4,16 +4,6 @@ require 'keg'
 
 module Homebrew extend self
   def info
-    # eventually we'll solidify an API, but we'll keep old versions
-    # awhile around for compatibility
-    if ARGV.json == "v1"
-      print_json
-    else
-      print_info
-    end
-  end
-
-  def print_info
     if ARGV.named.empty?
       if ARGV.include? "--all"
         Formula.each do |f|
@@ -27,18 +17,6 @@ module Homebrew extend self
       info_formula Formula.factory(ARGV.shift)
     else
       ARGV.formulae.each{ |f| info_formula f }
-    end
-  end
-
-  def print_json
-    require 'vendor/multi_json'
-
-    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
-    json = formulae.map {|f| f.to_hash}
-    if json.size == 1
-      puts MultiJson.encode json.pop
-    else
-      puts MultiJson.encode json
     end
   end
 

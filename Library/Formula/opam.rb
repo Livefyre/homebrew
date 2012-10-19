@@ -2,10 +2,11 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/tarball/0.7.7'
-  sha1 '8db32a4b0bbfa51e28edc0a390180bcfee790e5e'
+  url 'https://github.com/OCamlPro/opam/tarball/0.6.0'
+  sha1 '71aa753f37a60debe45a623bc2266a1262e9c305'
 
   depends_on "objective-caml"
+  depends_on "wget"
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -18,16 +19,14 @@ class Opam < Formula
   end
 
   def caveats; <<-EOS.undent
-    OPAM uses ~/.opam by default to install packages, so you need to initialize
-    the package database first by running (as a normal user):
+    opam uses ~/.opam by default to install packages, you need to init package
+    database first by running:
 
-    $  opam init
+      opam init
 
-    and add the following line to ~/.profile to initialize the environment:
+    and add the following line to ~/.profile to initialize opam environment:
 
-    $  eval `opam config -env`
-
-    Documentation and tutorials are available at http://opam.ocamlpro.com
+      eval `opam config -env`
     EOS
   end
 end

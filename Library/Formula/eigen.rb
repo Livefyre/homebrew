@@ -10,6 +10,7 @@ class Eigen < Formula
   option :universal
 
   def install
+    ENV.fortran
     ENV.universal_binary if build.universal?
     mkdir 'eigen-build' do
       args = std_cmake_args

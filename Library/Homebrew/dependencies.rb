@@ -21,7 +21,7 @@ class DependencyCollector
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Set.new
   end
 
   def add spec
@@ -185,7 +185,7 @@ class LanguageModuleDependency < Requirement
       when :lua     then "luarocks install"
       when :node    then "npm install"
       when :perl    then "cpan -i"
-      when :python  then "pip install"
+      when :python  then "easy_install"
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
     end
@@ -196,9 +196,6 @@ end
 # This requirement is used to require an X11 implementation,
 # optionally with a minimum version number.
 class X11Dependency < Requirement
-  include Comparable
-  attr_reader :min_version
-
   def initialize min_version=nil
     @min_version = min_version
   end
@@ -220,20 +217,9 @@ class X11Dependency < Requirement
     ENV.x11
   end
 
-  def <=> other
-    unless other.is_a? X11Dependency
-      raise TypeError, "expected X11Dependency"
-    end
-
-    if other.min_version.nil?
-      1
-    elsif @min_version.nil?
-      -1
-    else
-      @min_version <=> other.min_version
-    end
+  def hash
+    "X11".hash
   end
-
 end
 
 

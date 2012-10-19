@@ -7,12 +7,7 @@ class Gnuplot < Formula
 
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
-  option 'pdf', 'Build with pdflib-lite support.'
-  option 'wx', 'Build with wxWidgets support.'
-  option 'nolua', 'Build without lua support.'
-  option 'nogd', 'Build without gd support.'
-
-  if build.head?
+  if ARGV.build_head?
     depends_on :automake
     depends_on :libtool
   end
@@ -21,16 +16,18 @@ class Gnuplot < Formula
   depends_on 'readline'
   depends_on 'pango'
   depends_on :x11
-  depends_on 'pdflib-lite' if build.include? 'pdf'
-  depends_on 'lua' unless build.include? 'nolua'
-  depends_on 'gd' unless build.include? 'nogd'
-  depends_on 'wxmac' if build.include? 'wx'
+  depends_on 'pdflib-lite' if ARGV.include? "--pdf"
+  depends_on 'lua' unless ARGV.include? '--nolua'
+  depends_on 'gd' unless ARGV.include? "--nogd"
+  depends_on 'wxmac' if ARGV.include? "--wx"
 
-  def patches
-    # MacPorts patch --without-aquaterm as a configuration option. Submitted
-    # upstream:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3476165&group_id=2055&atid=302055
-    {:p0 => 'https://trac.macports.org/export/96897/trunk/dports/math/gnuplot/files/patch-configure-aquaterm.diff'}
+  def options
+    [
+      ["--pdf", "Build with pdflib-lite support."],
+      ["--wx", "Build with wxWidgets support."],
+      ["--nolua", "Build without lua support."],
+      ["--nogd", "Build without gd support."]
+    ]
   end
 
   def install
@@ -39,27 +36,21 @@ class Gnuplot < Formula
     pdflib = Formula.factory 'pdflib-lite'
     gd = Formula.factory 'gd'
 
-    # Aquaterm disabled due to breakage. See:
-    #   https://github.com/mxcl/homebrew/issues/14647
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --with-readline=#{readline.prefix}
-      --without-aquaterm
-    ]
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-readline=#{readline.prefix}"]
 
-    args << '--disable-wxwidgets' unless build.include? 'wx'
-    args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
-    args << '--without-lua' if build.include? 'nolua'
+    args << "--disable-wxwidgets" unless ARGV.include? "--wx"
+    args << "--with-pdf=#{pdflib.prefix}" if ARGV.include? '--pdf'
+    args << "--without-lua" if ARGV.include? "--nolua"
 
-    if build.include? 'nogd'
+    if ARGV.include? '--nogd'
       args << '--without-gd'
     else
       args << "--with-gd=#{gd.prefix}"
     end
 
-    system 'autoreconf' if build.head?
+    system "autoreconf" if ARGV.build_head?
 
     system "./configure", *args
     system "make install"

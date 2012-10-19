@@ -2,10 +2,10 @@ require 'formula'
 
 class Mess < Formula
   homepage 'http://www.mess.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => 17961
-  version '0.147'
+  url 'svn://messdev.no-ip.org/mess', :revision => 15603
+  version '146u3'
 
-  head 'svn://dspnet.fr/mame/trunk'
+  head 'svn://messdev.no-ip.org/mess'
 
   depends_on :x11
   depends_on 'sdl'
@@ -15,7 +15,7 @@ class Mess < Formula
     ENV['INCPATH'] = "-I./src/lib/util -I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
 
-    system 'make', 'TARGET=mess', 'SUBTARGET=mess'
+    system 'make'
 
     if MacOS.prefer_64_bit?
       bin.install 'mess64' => 'mess'

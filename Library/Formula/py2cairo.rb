@@ -25,10 +25,11 @@ class Py2cairo < Formula
       end
     end
 
-    # waf miscompiles py2cairo on >= lion with HB python, linking the wrong
-    # Python Library.  So add a LINKFLAG that sets the path.
+    # waf miscompiles py2cairo on Lion, linking the wrong Python Library when
+    # HB Python is installed.  So add a LINKFLAG that sets the path to the real
+    # python Library as determined by `python-prefix`, where it gets used at
+    # link time and fixes the problem where you can't import cairo into Python.
     # https://github.com/mxcl/homebrew/issues/12893
-    # https://github.com/mxcl/homebrew/issues/14781
     # https://bugs.freedesktop.org/show_bug.cgi?id=51544
     ENV['LINKFLAGS'] = "-L#{%x(python-config --prefix).chomp}/lib"
     system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"

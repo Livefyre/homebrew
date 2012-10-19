@@ -199,7 +199,9 @@ class Pathname
   end
 
   def text_executable?
-    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
+    %r[^#!\s*.+] === open('r') { |f| f.readline }
+  rescue EOFError
+    false
   end
 
   def incremental_hash(hasher)
@@ -360,6 +362,12 @@ module ObserverPathnameExtension
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
+    $d+=1
+  end
+  def mkpath
+    return if exist?
+    super
+    puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src

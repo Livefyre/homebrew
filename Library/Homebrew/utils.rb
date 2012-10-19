@@ -216,10 +216,8 @@ def inreplace path, before=nil, after=nil
   end
 end
 
-def ignore_interrupts(opt = nil)
-  std_trap = trap("INT") do
-    puts "One sec, just cleaning up" unless opt == :quietly
-  end
+def ignore_interrupts
+  std_trap = trap("INT") { puts "One sec, just cleaning up" }
   yield
 ensure
   trap("INT", std_trap)

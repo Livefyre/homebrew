@@ -21,18 +21,6 @@ def syspath
     %W{/usr /usr/local}
   end
 end
-def exec *args
-  path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
-  open(path, 'a') do |f|
-    f.print '[', $0
-    f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
-    f.print '] '
-    f.puts args.join(' ')
-    f.puts
-  end
-  Kernel.exec *args
-end if ENV['HOMEBREW_LOG']
-
 
 class Cmd
   def initialize path, args
@@ -180,10 +168,9 @@ class Cmd
     dels = @args - args
     adds = args - @args
     dups = dels & args
-
-    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
-    STDERR.puts "brew: superenv deduped: #{dels}" unless dups.empty?
-    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv deduped: #{dels}" unless dups.empty?
+    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
   end
 end
 

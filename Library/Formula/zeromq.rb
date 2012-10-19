@@ -24,9 +24,6 @@ class Zeromq < Formula
     depends_on :libtool
   end
 
-  # Remove along with build_fat hack at 3.2.0
-  env :std if build.universal?
-
   fails_with :llvm do
     build 2326
     cause "Segfault while linking"

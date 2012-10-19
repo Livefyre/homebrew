@@ -7,8 +7,6 @@ class Xdotool < Formula
 
   depends_on 'pkg-config' => :build
 
-  depends_on :x11
-
   def install
     system "make", "PREFIX=#{prefix}", "INSTALLMAN=#{man}", "install"
   end

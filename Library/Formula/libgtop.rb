@@ -17,8 +17,7 @@ class Libgtop < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--without-x"
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

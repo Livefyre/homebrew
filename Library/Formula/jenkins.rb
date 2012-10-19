@@ -2,8 +2,10 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.486/jenkins.war'
-  sha1 'c33ff88dfe11828623713ce47e3df0f8b441b9aa'
+  url 'http://mirrors.jenkins-ci.org/war/1.478/jenkins.war'
+  version '1.478'
+  sha1 'e26a450b8e1cee543a9038b37a41b8d0e9b9b043'
+
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
@@ -18,11 +20,12 @@ class Jenkins < Formula
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
       mkdir -p ~/Library/LaunchAgents
-      ln -nfs #{plist_path} ~/Library/LaunchAgents/
+      cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     If this is an upgrade and you already have the #{plist_path.basename} loaded:
       launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
@@ -41,7 +44,7 @@ class Jenkins < Formula
   <array>
   <string>/usr/bin/java</string>
   <string>-jar</string>
-  <string>#{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war</string>
+  <string>#{libexec}/jenkins.war</string>
   <string>--httpListenAddress=127.0.0.1</string>
   </array>
   <key>RunAtLoad</key>

@@ -35,12 +35,8 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
           if f.can_cleanup?
-            if ARGV.dry_run?
-              puts "Would remove: #{keg}"
-            else
-              puts "Removing: #{keg}..."
-              rm_rf keg
-            end
+            puts "Removing #{keg}..."
+            rm_rf keg unless ARGV.dry_run?
           else
             opoo "Skipping (old) keg-only: #{keg}"
           end
@@ -62,12 +58,8 @@ module Homebrew extend self
         f = Formula.factory(name) rescue nil
         old_bottle = bottle_file_outdated? f, pn
         if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
-          if ARGV.dry_run?
-            puts "Would remove: #{pn}"
-          else
-            puts "Removing: #{pn}..."
-            rm pn
-          end
+          puts "Removing #{pn}..."
+          rm pn unless ARGV.dry_run?
         end
       end
     end
@@ -94,7 +86,7 @@ class Formula
         select{ |ff| ff.deps.map(&:to_s).include? name }.
         map{ |ff| ff.rack.children rescue [] }.
         flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
+        map{ |keg_path| Tab.for_keg(keg_path).sha }.
         include? nil
     end
   end

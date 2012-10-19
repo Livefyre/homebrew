@@ -69,8 +69,7 @@ def pre_superenv_hacks f
 end
 
 def install f
-  deps = f.recursive_deps
-  keg_only_deps = deps.select{|dep| dep.keg_only? }
+  keg_only_deps = f.recursive_deps.uniq.select{|dep| dep.keg_only? }
 
   pre_superenv_hacks(f)
   require 'superenv'
@@ -82,10 +81,10 @@ def install f
     f.recursive_requirements.each { |rq| rq.modify_build_environment }
   end
 
-  deps.each do |dep|
-    opt = HOMEBREW_PREFIX/:opt/dep
+  keg_only_deps.each do |dep|
+    opt = HOMEBREW_PREFIX/:opt/dep.name
     fixopt(dep) unless opt.directory?
-    if not superenv? and dep.keg_only?
+    if not superenv?
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
@@ -98,7 +97,6 @@ def install f
 
   if superenv?
     ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = f.recursive_deps.map(&:to_s)
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
     f.recursive_requirements.each { |rq| rq.modify_build_environment }
@@ -128,6 +126,7 @@ def install f
       end
 
       interactive_shell f
+      nil
     else
       f.prefix.mkpath
       f.install
@@ -148,7 +147,7 @@ end
 
 def fixopt f
   path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.realpath
+    f.linked_keg.readlink
   elsif f.prefix.directory?
     f.prefix
   elsif (kids = f.rack.children).size == 1 and kids.first.directory?
@@ -158,5 +157,5 @@ def fixopt f
   end
   Keg.new(path).optlink
 rescue StandardError
-  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+  "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end

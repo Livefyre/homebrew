@@ -333,7 +333,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if @clone.exist?
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
-        unless quiet_system @@git, 'status', '-s'
+        unless system @@git, 'status', '-s'
           puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
@@ -342,7 +342,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone', '--no-checkout']
+      clone_args = [@@git, 'clone']
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
@@ -376,9 +376,9 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
         when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
@@ -458,27 +458,19 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
-  def hgpath
-    @path ||= %W[
-      #{which("hg")}
-      #{HOMEBREW_PREFIX}/bin/hg
-      #{HOMEBREW_PREFIX}/share/python/hg
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
-    raise "You must: brew install mercurial" unless hgpath
+    raise "You must install Mercurial: brew install mercurial" unless which "hg"
 
     ohai "Cloning #{@url}"
 
     unless @clone.exist?
       url=@url.sub(%r[^hg://], '')
-      safe_system hgpath, 'clone', url, @clone
+      safe_system 'hg', 'clone', url, @clone
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system hgpath, 'pull'
-        safe_system hgpath, 'update'
+        safe_system 'hg', 'pull'
+        safe_system 'hg', 'update'
       end
     end
   end
@@ -488,9 +480,9 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     Dir.chdir @clone do
       if @spec and @ref
         ohai "Checking out #{@spec} #{@ref}"
-        safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
+        safe_system 'hg', 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
-        safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
+        safe_system 'hg', 'archive', '--subrepos', '-y', '-t', 'files', dst
       end
     end
   end
@@ -505,24 +497,17 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
-  def bzrpath
-    @path ||= %W[
-      #{which("bzr")}
-      #{HOMEBREW_PREFIX}/bin/bzr
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
-    raise "You must: brew install bazaar" unless bzrpath
+    raise "You must install bazaar first" unless which "bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^bzr://], '')
       # 'lightweight' means history-less
-      safe_system bzrpath, 'checkout', '--lightweight', url, @clone
+      safe_system 'bzr', 'checkout', '--lightweight', url, @clone
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system bzrpath, 'update' }
+      Dir.chdir(@clone) { safe_system 'bzr', 'update' }
     end
   end
 
@@ -537,10 +522,10 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     #  if @spec and @ref
     #    ohai "Checking out #{@spec} #{@ref}"
     #    Dir.chdir @clone do
-    #      safe_system bzrpath, 'export', '-r', @ref, dst
+    #      safe_system 'bzr', 'export', '-r', @ref, dst
     #    end
     #  else
-    #    safe_system bzrpath, 'export', dst
+    #    safe_system 'bzr', 'export', dst
     #  end
     #end
   end
@@ -555,51 +540,47 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
-  def fossilpath
-    @path ||= %W[
-      #{which("fossil")}
-      #{HOMEBREW_PREFIX}/bin/fossil
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
-    raise "You must: brew install fossil" unless fossilpath
+    raise "You must install fossil first" unless which "fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^fossil://], '')
-      safe_system fossilpath, 'clone', url, @clone
+      safe_system 'fossil', 'clone', url, @clone
     else
       puts "Updating #{@clone}"
-      safe_system fossilpath, 'pull', '-R', @clone
+      safe_system 'fossil', 'pull', '-R', @clone
     end
   end
 
   def stage
     # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
-    safe_system fossilpath, 'open', @clone
+    safe_system 'fossil', 'open', @clone
     if @spec and @ref
       ohai "Checking out #{@spec} #{@ref}"
-      safe_system fossilpath, 'checkout', @ref
+      safe_system 'fossil', 'checkout', @ref
     end
   end
 end
 
 class DownloadStrategyDetector
-  def self.detect(url, strategy=nil)
-    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
-      strategy
-    elsif strategy.is_a? Symbol
-      detect_from_symbol(strategy)
-    else
-      detect_from_url(url)
+  def initialize url, strategy=nil
+    @url = url
+    @strategy = strategy
+  end
+
+  def detect
+    if @strategy.is_a? Class and @strategy.ancestors.include? AbstractDownloadStrategy
+      @strategy
+    elsif @strategy.is_a? Symbol then detect_from_symbol
+    else detect_from_url
     end
   end
 
   private
 
-  def self.detect_from_url(url)
-    case url
+  def detect_from_url
+    case @url
       # We use a special URL pattern for cvs
     when %r[^cvs://] then CVSDownloadStrategy
       # Standard URLs
@@ -625,8 +606,8 @@ class DownloadStrategyDetector
     end
   end
 
-  def self.detect_from_symbol(symbol)
-    case symbol
+  def detect_from_symbol
+    case @strategy
     when :bzr then BazaarDownloadStrategy
     when :curl then CurlDownloadStrategy
     when :cvs then CVSDownloadStrategy
@@ -636,7 +617,7 @@ class DownloadStrategyDetector
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
-      raise "Unknown download strategy #{strategy} was requested."
+      raise "Unknown download strategy #{@strategy} was requested."
     end
   end
 end
