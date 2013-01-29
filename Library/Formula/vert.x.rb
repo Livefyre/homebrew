@@ -4,7 +4,9 @@ class VertX < Formula
   homepage 'http://vertx.io'
   url 'http://vertx.io/downloads/vert.x-1.3.1.final.tar.gz'
   version '1.3.1'
-  #sha1 '0e2cb0298110d7f94cfdc8f6865146963f50b431'
+  sha1 '734358191245baf63047264008867e69e7d56bed'
+  depends_on "java7"
+  depends_on "jython"
 
   def install
     # Remove Windows files
