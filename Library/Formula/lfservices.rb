@@ -4,7 +4,7 @@ class Lfservices < Formula
   homepage 'http://github.com/Livefyre/lfdj'
   #head 'git@github.com:Livefyre/lfdj.git'
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
-  version '1.0'
+  version '1.1.1'
   depends_on 'mysql'
   depends_on 'mongodb'
   depends_on 'redis'
@@ -12,6 +12,7 @@ class Lfservices < Formula
   depends_on 'elasticsearchhead'
   depends_on 'supervisord'
   depends_on 'selenium-server-standalone'
+  depends_on 'rabbitmq'
 
   def install
     dir = (prefix + 'sconf.lfservices')
@@ -20,6 +21,7 @@ class Lfservices < Formula
     (dir + 'redis.conf').write redis
     (dir + 'mongo.conf').write mongo
     (dir + 'mysql.conf').write mysql
+    (dir + 'rabbit.conf').write rabbit
     (dir + 'selenium.conf').write selenium
     (dir + 'group.conf').write program_group
     share.install dir
@@ -28,7 +30,7 @@ class Lfservices < Formula
   def program_group
     return <<-EOS
 [group:services]
-programs=mysql,mongo,redis,elasticsearch
+programs=mysql,mongo,redis,elasticsearch,rabbit
 priority=1
     EOS
   end
@@ -91,6 +93,23 @@ startretries = 10
 user = #{ENV['USER']}
     EOS
   end
+
+  def rabbit
+    hoststr = `hostname`.strip
+    return <<-EOS
+[program:rabbit]
+command = /usr/local/opt/rabbitmq/sbin/rabbitmq-server
+process_name = rabbit
+directory = /usr/local/var
+priority = 5
+autorestart = true
+startsecs = 5
+startretries = 10
+user = #{ENV['USER']}
+environment = PATH=/usr/local/sbin:/usr/bin:/bin:/usr/local/bin,CONF_ENV_FILE=/usr/local/etc/rabbitmq/rabbitmq-env.conf,HOME=#{ENV['HOME']}
+    EOS
+  end
+
 
   def elasticsearch
     v = Elasticsearch.new.version

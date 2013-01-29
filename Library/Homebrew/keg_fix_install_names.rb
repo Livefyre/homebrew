@@ -47,7 +47,7 @@ class Keg
     id = install_names.shift if file.dylib?
 
     install_names.compact!
-    install_names.reject!{ |fn| fn =~ /^@(loader|executable)_path/ }
+    install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
 
     # Don't fix absolute paths unless they are rooted in the build directory
     install_names.reject! do |fn|
@@ -75,19 +75,17 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    if (lib = join 'lib').directory?
-      lib.find do |pn|
+    dirs = %w{bin lib Frameworks}
+    dirs.map! { |dir| join(dir) }
+    dirs.reject! { |dir| not dir.directory? }
+
+    dirs.each do |dir|
+      dir.find do |pn|
         next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle?
+        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
       end
     end
 
-    if (bin = join 'bin').directory?
-      bin.find do |pn|
-        next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.mach_o_executable?
-      end
-    end
     mach_o_files
   end
 end

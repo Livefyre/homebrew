@@ -23,7 +23,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.4.1"
+        "4.6"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end
@@ -58,12 +58,7 @@ module MacOS::Xcode extend self
   end
 
   def installed?
-    # Telling us whether the Xcode.app is installed or not.
-    @installed ||= V4_BUNDLE_PATH.exist? ||
-      V3_BUNDLE_PATH.exist? ||
-      MacOS.app_with_bundle_id(V4_BUNDLE_ID) ||
-      MacOS.app_with_bundle_id(V3_BUNDLE_ID) ||
-      false
+    not prefix.nil?
   end
 
   def version
@@ -132,8 +127,10 @@ module MacOS::Xcode extend self
         "4.3"
       when 40
         "4.4"
+      when 41
+        "4.5"
       else
-        "4.4"
+        "4.5"
       end
     end
   end
@@ -144,6 +141,14 @@ module MacOS::Xcode extend self
 
   def provides_gcc?
     version.to_f < 4.3
+  end
+
+  def default_prefix?
+    if version.to_f < 4.3
+      %r{^/Developer} === prefix
+    else
+      %r{^/Applications/Xcode.app} === prefix
+    end
   end
 end
 
@@ -160,7 +165,7 @@ module MacOS::CLT extend self
 
   def latest_version?
     `/usr/bin/clang -v 2>&1` =~ %r{tags/Apple/clang-(\d+)\.(\d+)\.(\d+)}
-    $1.to_i >= 421 and $3.to_i >= 57
+    $1.to_i >= 425 and $3.to_i >= 24
   end
 
   def version
