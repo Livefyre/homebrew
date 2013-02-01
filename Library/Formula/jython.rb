@@ -13,5 +13,17 @@ class Jython < Formula
   def install
     system "java", "-jar", "jython-installer-#{version}.jar", "-s", "-d", libexec
     bin.install_symlink libexec/'bin/jython'
+    # setup a file for evaluating in your .profile
+    rc_dir = (prefix + 'rc')
+    (rc_dir + 'jython').write "export JYTHON_HOME=#{prefix}/libexec"
+    share.install rc_dir
+  end
+
+  def caveats; <<-EOS.undent
+    You should add to your .profile or .bashrc (if not already added):
+
+        for f in /usr/local/share/rc/*; do source $f; done
+
+    EOS
   end
 end
