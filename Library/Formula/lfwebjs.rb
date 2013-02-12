@@ -4,7 +4,7 @@ class Lfwebjs < Formula
   homepage 'http://github.com/Livefyre/lfwebjs'
   #head 'git@github.com:Livefyre/lfdj.git'
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
-  version 'dev'
+  version '1.0'
   depends_on 'plovr'
   depends_on 'supervisord'
   depends_on 'lfpython'
@@ -58,7 +58,7 @@ priority=999
     ['admin', 'bootstrap', 'search', 'write'].each_with_index do |pn, i|
       a.push <<-EOS.undent
         [program:#{pn}]
-        command = #{ENV['HOME']}/dev/lfdj/lf#{pn}/bin/django run_gunicorn --bind=127.0.0.1:1111#{i}
+        command = /usr/local/bin/python #{ENV['HOME']}/dev/lfdj/lf#{pn}/bin/django run_gunicorn --bind=127.0.0.1:1111#{i}
         redirect_stderr=True
         process_name = #{pn}
         directory = #{ENV['HOME']}/dev/lfdj/lf#{pn}

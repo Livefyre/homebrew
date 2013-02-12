@@ -4,7 +4,7 @@ class Lfdj < Formula
   homepage 'http://github.com/Livefyre/lfdj'
   #head 'git@github.com:Livefyre/lfdj.git'
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
-  version 'dev'
+  version '1.0'
   depends_on 'libevent'
   depends_on 'lfpython'
   depends_on 'lfservices'
@@ -37,10 +37,10 @@ class Lfdj < Formula
     (bin + 'refresh_all').write <<-EOS.undent
       #!/bin/bash -ex
       redis-cli flushdb
+      #{bin}/refresh_bs_s3
       #{bin}/refresh_mongo_db
       #{bin}/refresh_mysql_db
       #{bin}/refresh_es
-      #{bin}/refresh_bs_s3
     EOS
     (bin + 'refresh_bs_s3').write <<-EOS.undent
       #!/bin/bash -ex
