@@ -67,7 +67,7 @@ class Supervisord < Formula
   <key>KeepAlive</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
+  <string>root</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
   <key>StandardErrorPath</key>
