@@ -29,7 +29,17 @@ class Lfpython< Formula
   url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
   version '1.0'
 
+  def python_share
+    return Pathname.new('/usr/local/share/python')
+  end
+
+  def local_bin
+    return Pathname.new('/usr/local/bin')
+  end
+
   def install
+    ENV.prepend 'PATH', python_share, ':'
+    ENV.prepend 'PATH', local_bin, ':'
     [MySQLPython, Genshi, Distribute, Buildout].each do |m|
       m.new.brew do
         system "python", "setup.py", "build_ext"
@@ -37,5 +47,6 @@ class Lfpython< Formula
       # system "easy_install", "--script-dir=#{HOMEBREW_PREFIX}/share/python", m.url
       end
     end
+    (prefix + "totem").write ""
   end
 end

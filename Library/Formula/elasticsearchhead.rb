@@ -13,5 +13,6 @@ class Elasticsearchhead < Formula
       exit 1
     end
     system "/usr/local/Cellar/elasticsearch/#{v}/bin/plugin -install mobz/elasticsearch-head"
+    (prefix + 'totem').write ""
   end
 end

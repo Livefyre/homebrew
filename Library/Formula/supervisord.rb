@@ -48,8 +48,8 @@ class Supervisord < Formula
     end
   end
 
-  def startup_plist
-    return <<-EOS
+  def plist
+    return <<-EOPLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -67,7 +67,7 @@ class Supervisord < Formula
   <key>KeepAlive</key>
   <true/>
   <key>UserName</key>
-  <string>root</string>
+  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
   <key>StandardErrorPath</key>
@@ -76,7 +76,7 @@ class Supervisord < Formula
   <string>#{var}/log/supervisord-error.log</string>
 </dict>
 </plist>
-EOS
+EOPLIST
   end
 
   def supervisord_conf; <<-EOS.undent
