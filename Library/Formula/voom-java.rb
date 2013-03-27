@@ -4,7 +4,7 @@ class VoomJava < Formula
   homepage 'https://github.com/jaklaassen/voom-java'
   url 'http://packages.livefyre.com/buildout/packages/amqp-busmod-1.2.0-SNAPSHOT-jar-with-dependencies.jar'
   version '1.2.0'
-  sha1 'dc694099a331dfe2ae35cb8b59e527423f1ec3c5'
+  sha1 'a57fba1cfc9a221d9c088467fe3223b42ff10a2c'
   depends_on "java7"
   depends_on "jython"
 
