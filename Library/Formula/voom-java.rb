@@ -10,7 +10,7 @@ class VoomJava < Formula
 
   def install
      prefix.install Dir['*']
-     system "mvn install:install-file -Dfile=#{prefix}/amqp-busmod-1.2.0-SNAPSHOT-jar-with-dependencies.jar -DgroupId=com.livefyre -DartifactId=voom -Dversion=0.0.5 -Dpackaging=jar"
+     system "mvn install:install-file -Dfile=#{prefix}/amqp-busmod-1.2.0-SNAPSHOT-jar-with-dependencies.jar -DgroupId=com.livefyre -DartifactId=voom -Dversion=0.0.2-SNAPSHOT -Dpackaging=jar"
   end
 
   def test
