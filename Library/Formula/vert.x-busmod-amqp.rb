@@ -2,14 +2,14 @@ require 'formula'
 
 class VertXBusmodAmqp < Formula
   homepage 'https://github.com/jaklaassen/voom-java'
-  url 'git@github.com:jaklaassen/vert.x-busmod-amqp.git', :using => GitDownloadStrategy
+  url 'http://packages.livefyre.com/buildout/packages/amqp-busmod-1.2.0-SNAPSHOT-jar-with-dependencies.jar'
   version '1.2.0'
+  sha1 'a57fba1cfc9a221d9c088467fe3223b42ff10a2c'
   depends_on "vert.x"
-  depends_on "voom-java"
 
   def install
      prefix.install Dir['*']
-     system "cd #{prefix} && mvn install"
+     system "mvn install:install-file -Dfile=#{prefix}/amqp-busmod-1.2.0-SNAPSHOT-jar-with-dependencies.jar -DgroupId=org.vert-x.mod -DartifactId=amqp-busmod -Dversion=1.2.0-SNAPSHOT -Dpackaging=jar"
   end
 
   def test
