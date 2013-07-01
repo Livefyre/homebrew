@@ -1,13 +1,14 @@
 require 'formula'
 
-class VoomJava < Formula
-  homepage 'https://github.com/jaklaassen/voom-java'
-  url 'https://github.com/jaklaassen/voom-java.git'
-  version '0.0.2-SNAPSHOT'
-  depends_on "protobuf"
+class VoomVertx < Formula
+  homepage 'https://github.com/jaklaassen/voom-vertx'
+  url 'https://github.com/jaklaassen/voom-vertx.git'
+  version '1.2.1-SNAPSHOT'
+  depends_on "vert.x"
+  depends_on "voom-java"
 
   def install
-     system "mvn install"
+    system "mvn install"
   end
 
   def test
