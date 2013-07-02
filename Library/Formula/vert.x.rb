@@ -2,22 +2,23 @@ require 'formula'
 
 class VertX < Formula
   homepage 'http://vertx.io'
-  url 'http://packages.livefyre.com/buildout/packages/vert.x-1.3.1.final.tar.gz'
+  url 'https://github.com/Livefyre/vert.x.git', :branch => 'voom3.1'
   version '1.3.1'
-  sha1 '166bf64048ad18abafc305ebce9ee623aca88342'
   depends_on "java7"
   depends_on "jython"
+  depends_on "gradle"
 
   def install
+    system "./mk install dist"
     # Remove Windows files
-    rm_f Dir["bin/*.bat"]    
-    libexec.install Dir['lib/*.jar']
-    prefix.install Dir['*']
+    rm_f Dir["build/vert.x-1.3.1.final/bin/*.bat"]    
+    libexec.install Dir['build/vert.x-1.3.1.final/lib/*.jar']
+    prefix.install Dir['build/vert.x-1.3.1.final/*']
 
-    inreplace "#{bin}/vertx" do |s|
-      # Replace CLASSPATH paths to use libexec instead of lib
-      s.gsub! /\$\{APP_HOME\}\/lib\//, "\${APP_HOME}/libexec/"
-    end
+    #inreplace "#{bin}/vertx" do |s|
+    #  Replace CLASSPATH paths to use libexec instead of lib
+    #  s.gsub! /\$\{APP_HOME\}\/lib\//, "\${APP_HOME}/libexec/"
+    #end
   end
 
   def test
