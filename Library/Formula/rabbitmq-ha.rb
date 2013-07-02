@@ -1,12 +1,9 @@
 require 'formula'
 
-class VoomVertx < Formula
-  homepage 'https://github.com/jaklaassen/voom-vertx'
-  url 'https://github.com/jaklaassen/voom-vertx.git'
-  version '1.2.1-SNAPSHOT'
-  depends_on "vert.x"
-  depends_on "voom-java"
-  depends_on "rabbitmq-ha"
+class RabbitmqHa < Formula
+  homepage 'https://github.com/jaklaassen/rabbitmq-ha-client'
+  url 'https://github.com/jaklaassen/rabbitmq-ha-client.git'
+  version '0.2.0-SNAPSHOT'
 
   def install
     system "mvn install"
