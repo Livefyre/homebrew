@@ -7,6 +7,7 @@ class VertX < Formula
   depends_on "java7"
   depends_on "jython"
   depends_on "gradle"
+  depends_on "voom-java"
 
   def install
     system "./mk install dist"
