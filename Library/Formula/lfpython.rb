@@ -27,7 +27,7 @@ class Lfpython< Formula
 
   homepage 'http://github.com/Livefyre/lfdj'
   #head 'git@github.com:Livefyre/lfdj.git'
-  url 'https://raw.github.com/gist/7181e7f98f07ca234595/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
+  url 'https://gist.github.com/ninowalker/7181e7f98f07ca234595/raw/e81cb0a56c2e82cf88efe77dcb49ee4028193c5b/supervisord.conf'
   version '1.1'
 
   def python_share
