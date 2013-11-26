@@ -182,8 +182,8 @@ end
 
 __END__
 diff -ur a/client/mysql.cc b/client/mysql.cc
---- a/client/mysql.cc 2013-07-10 17:17:29.000000000 +0100
-+++ b/client/mysql.cc 2013-10-08 15:24:33.000000000 +0100
+--- a/client/mysql.cc	2013-07-10 17:17:29.000000000 +0100
++++ b/client/mysql.cc	2013-10-08 15:24:33.000000000 +0100
 @@ -234,8 +234,8 @@
    The same is true for stderr.
  */
@@ -196,20 +196,20 @@ diff -ur a/client/mysql.cc b/client/mysql.cc
  static inline my_bool
  my_win_is_console_cached(FILE *file)
 diff -ur a/include/my_global.h b/include/my_global.h
---- a/include/my_global.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/include/my_global.h 2013-10-08 15:04:59.000000000 +0100
+--- a/include/my_global.h	2013-07-10 17:17:27.000000000 +0100
++++ b/include/my_global.h	2013-10-08 15:04:59.000000000 +0100
 @@ -461,7 +461,7 @@
  #endif
  
  #define swap_variables(t, a, b) { t dummy; dummy= a; a= b; b= dummy; }
--#define test(a)    ((a) ? 1 : 0)
-+#define mysql_test(a)    ((a) ? 1 : 0)
+-#define test(a)		((a) ? 1 : 0)
++#define mysql_test(a)		((a) ? 1 : 0)
  #define set_if_bigger(a,b)  do { if ((a) < (b)) (a)=(b); } while(0)
  #define set_if_smaller(a,b) do { if ((a) > (b)) (a)=(b); } while(0)
  #define test_all_bits(a,b) (((a) & (b)) == (b))
 diff -ur a/include/myisam.h b/include/myisam.h
---- a/include/myisam.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/include/myisam.h  2013-10-08 15:11:50.000000000 +0100
+--- a/include/myisam.h	2013-07-10 17:17:27.000000000 +0100
++++ b/include/myisam.h	2013-10-08 15:11:50.000000000 +0100
 @@ -80,8 +80,8 @@
  
  #define mi_is_key_active(_keymap_,_keyno_) \
@@ -240,8 +240,8 @@ diff -ur a/include/myisam.h b/include/myisam.h
                              ((_keymap_) == mi_get_mask_all_keys_active(_keys_))
  #define mi_set_all_keys_active(_keymap_,_keys_) \
 diff -ur a/libmysql/libmysql.c b/libmysql/libmysql.c
---- a/libmysql/libmysql.c 2013-07-10 17:17:29.000000000 +0100
-+++ b/libmysql/libmysql.c 2013-10-08 15:11:50.000000000 +0100
+--- a/libmysql/libmysql.c	2013-07-10 17:17:29.000000000 +0100
++++ b/libmysql/libmysql.c	2013-10-08 15:11:50.000000000 +0100
 @@ -2071,7 +2071,7 @@
    buff[4]= (char) stmt->flags;
    int4store(buff+5, 1);                         /* iteration count */
@@ -351,8 +351,8 @@ diff -ur a/libmysql/libmysql.c b/libmysql/libmysql.c
  
  /*
 diff -ur a/libmysqld/lib_sql.cc b/libmysqld/lib_sql.cc
---- a/libmysqld/lib_sql.cc  2013-07-10 17:17:29.000000000 +0100
-+++ b/libmysqld/lib_sql.cc  2013-10-08 15:24:34.000000000 +0100
+--- a/libmysqld/lib_sql.cc	2013-07-10 17:17:29.000000000 +0100
++++ b/libmysqld/lib_sql.cc	2013-10-08 15:24:34.000000000 +0100
 @@ -337,7 +337,7 @@
    thd->client_param_count= stmt->param_count;
    thd->client_params= stmt->params;
@@ -363,8 +363,8 @@ diff -ur a/libmysqld/lib_sql.cc b/libmysqld/lib_sql.cc
              emb_read_query_result(stmt->mysql));
    stmt->affected_rows= stmt->mysql->affected_rows;
 diff -ur a/mysys/mf_iocache.c b/mysys/mf_iocache.c
---- a/mysys/mf_iocache.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/mysys/mf_iocache.c  2013-10-08 15:11:51.000000000 +0100
+--- a/mysys/mf_iocache.c	2013-07-10 17:17:27.000000000 +0100
++++ b/mysys/mf_iocache.c	2013-10-08 15:11:51.000000000 +0100
 @@ -180,7 +180,7 @@
        DBUG_ASSERT(seek_offset == 0);
      }
@@ -375,20 +375,20 @@ diff -ur a/mysys/mf_iocache.c b/mysys/mf_iocache.c
  
    info->disk_writes= 0;
 diff -ur a/mysys/my_copy.c b/mysys/my_copy.c
---- a/mysys/my_copy.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/mysys/my_copy.c 2013-10-08 15:11:51.000000000 +0100
+--- a/mysys/my_copy.c	2013-07-10 17:17:27.000000000 +0100
++++ b/mysys/my_copy.c	2013-10-08 15:11:51.000000000 +0100
 @@ -63,7 +63,7 @@
    from_file=to_file= -1;
    DBUG_ASSERT(!(MyFlags & (MY_FNABP | MY_NABP))); /* for my_read/my_write */
-   if (MyFlags & MY_HOLD_ORIGINAL_MODES)    /* Copy stat if possible */
+   if (MyFlags & MY_HOLD_ORIGINAL_MODES)		/* Copy stat if possible */
 -    new_file_stat= test(my_stat((char*) to, &new_stat_buff, MYF(0)));
 +    new_file_stat= mysql_test(my_stat((char*) to, &new_stat_buff, MYF(0)));
  
    if ((from_file=my_open(from,O_RDONLY | O_SHARE,MyFlags)) >= 0)
    {
 diff -ur a/mysys/my_getwd.c b/mysys/my_getwd.c
---- a/mysys/my_getwd.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/mysys/my_getwd.c  2013-10-08 15:11:51.000000000 +0100
+--- a/mysys/my_getwd.c	2013-07-10 17:17:27.000000000 +0100
++++ b/mysys/my_getwd.c	2013-10-08 15:11:51.000000000 +0100
 @@ -162,12 +162,12 @@
  
  my_bool has_path(const char *name)
@@ -406,8 +406,8 @@ diff -ur a/mysys/my_getwd.c b/mysys/my_getwd.c
      ;
  }
 diff -ur a/sql/event_db_repository.cc b/sql/event_db_repository.cc
---- a/sql/event_db_repository.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/event_db_repository.cc  2013-10-08 15:24:34.000000000 +0100
+--- a/sql/event_db_repository.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/event_db_repository.cc	2013-10-08 15:24:34.000000000 +0100
 @@ -469,7 +469,7 @@
  end:
    event_table->file->ha_index_end();
@@ -463,8 +463,8 @@ diff -ur a/sql/event_db_repository.cc b/sql/event_db_repository.cc
  
  /**
 diff -ur a/sql/field.cc b/sql/field.cc
---- a/sql/field.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/field.cc  2013-10-08 15:24:35.000000000 +0100
+--- a/sql/field.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/field.cc	2013-10-08 15:24:35.000000000 +0100
 @@ -1855,7 +1855,7 @@
  
  bool Field::optimize_range(uint idx, uint part)
@@ -484,8 +484,8 @@ diff -ur a/sql/field.cc b/sql/field.cc
      break;
    case MYSQL_TYPE_NEWDECIMAL:
 diff -ur a/sql/field.h b/sql/field.h
---- a/sql/field.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/field.h 2013-10-08 15:11:51.000000000 +0100
+--- a/sql/field.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/field.h	2013-10-08 15:11:51.000000000 +0100
 @@ -891,14 +891,14 @@
  
      */
@@ -517,8 +517,8 @@ diff -ur a/sql/field.h b/sql/field.h
    int cmp_binary_offset(uint row_offset)
    { return cmp_offset(row_offset); }
 diff -ur a/sql/field_conv.cc b/sql/field_conv.cc
---- a/sql/field_conv.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/field_conv.cc 2013-10-08 15:24:36.000000000 +0100
+--- a/sql/field_conv.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/field_conv.cc	2013-10-08 15:24:36.000000000 +0100
 @@ -331,7 +331,7 @@
  {
    longlong value= copy->from_field->val_int();
@@ -536,8 +536,8 @@ diff -ur a/sql/field_conv.cc b/sql/field_conv.cc
 +    return to->store(from->val_int(), mysql_test(from->flags & UNSIGNED_FLAG));
  }
 diff -ur a/sql/ha_ndbcluster.cc b/sql/ha_ndbcluster.cc
---- a/sql/ha_ndbcluster.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/ha_ndbcluster.cc  2013-10-08 15:24:36.000000000 +0100
+--- a/sql/ha_ndbcluster.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/ha_ndbcluster.cc	2013-10-08 15:24:36.000000000 +0100
 @@ -2807,7 +2807,7 @@
      if (check_index_fields_not_null(key_info))
        m_index[i].null_in_unique_index= TRUE;
@@ -548,8 +548,8 @@ diff -ur a/sql/ha_ndbcluster.cc b/sql/ha_ndbcluster.cc
    }
  
 diff -ur a/sql/ha_partition.cc b/sql/ha_partition.cc
---- a/sql/ha_partition.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/ha_partition.cc 2013-10-08 15:24:37.000000000 +0100
+--- a/sql/ha_partition.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/ha_partition.cc	2013-10-08 15:24:37.000000000 +0100
 @@ -3221,7 +3221,7 @@
    m_mode= mode;
    m_open_test_lock= test_if_locked;
@@ -578,8 +578,8 @@ diff -ur a/sql/ha_partition.cc b/sql/ha_partition.cc
  
    do
 diff -ur a/sql/handler.cc b/sql/handler.cc
---- a/sql/handler.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/handler.cc  2013-10-08 15:24:38.000000000 +0100
+--- a/sql/handler.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/handler.cc	2013-10-08 15:24:38.000000000 +0100
 @@ -5737,7 +5737,7 @@
    DBUG_ENTER("handler::multi_range_read_init");
    mrr_iter= seq_funcs->init(seq_init_param, n_ranges, mode);
@@ -623,7 +623,7 @@ diff -ur a/sql/handler.cc b/sql/handler.cc
 -    rowids_buf_cur += h->ref_length + sizeof(void*) * test(is_mrr_assoc);
 +    rowids_buf_cur += h->ref_length + sizeof(void*) * mysql_test(is_mrr_assoc);
      if (h2->mrr_funcs.skip_record &&
-  h2->mrr_funcs.skip_record(h2->mrr_iter, (char *) cur_range_info, rowid))
+ 	h2->mrr_funcs.skip_record(h2->mrr_iter, (char *) cur_range_info, rowid))
        continue;
 @@ -6403,7 +6403,7 @@
    double index_read_cost;
@@ -635,8 +635,8 @@ diff -ur a/sql/handler.cc b/sql/handler.cc
  
    if (!max_buff_entries)
 diff -ur a/sql/handler.h b/sql/handler.h
---- a/sql/handler.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/handler.h 2013-10-08 15:11:52.000000000 +0100
+--- a/sql/handler.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/handler.h	2013-10-08 15:11:52.000000000 +0100
 @@ -3347,7 +3347,7 @@
  
  static inline bool ha_check_storage_engine_flag(const handlerton *db_type, uint32 flag)
@@ -647,8 +647,8 @@ diff -ur a/sql/handler.h b/sql/handler.h
  
  static inline bool ha_storage_engine_is_enabled(const handlerton *db_type)
 diff -ur a/sql/item.cc b/sql/item.cc
---- a/sql/item.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item.cc 2013-10-08 15:24:38.000000000 +0100
+--- a/sql/item.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item.cc	2013-10-08 15:24:38.000000000 +0100
 @@ -2545,7 +2545,7 @@
    field_name= field_par->field_name;
    db_name= field_par->table->s->db.str;
@@ -659,8 +659,8 @@ diff -ur a/sql/item.cc b/sql/item.cc
                  field_par->repertoire());
    fix_char_length(field_par->char_length());
 diff -ur a/sql/item.h b/sql/item.h
---- a/sql/item.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item.h  2013-10-08 15:11:53.000000000 +0100
+--- a/sql/item.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item.h	2013-10-08 15:11:53.000000000 +0100
 @@ -1660,7 +1660,7 @@
    {
      if (is_expensive_cache < 0)
@@ -689,8 +689,8 @@ diff -ur a/sql/item.h b/sql/item.h
    virtual void clear() { null_value= TRUE; value_cached= FALSE; }
    bool is_null() { return value_cached ? null_value : example->is_null(); }
 diff -ur a/sql/item_cmpfunc.cc b/sql/item_cmpfunc.cc
---- a/sql/item_cmpfunc.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_cmpfunc.cc 2013-10-08 15:24:39.000000000 +0100
+--- a/sql/item_cmpfunc.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_cmpfunc.cc	2013-10-08 15:24:39.000000000 +0100
 @@ -497,7 +497,7 @@
                                       *item) :
  #endif
@@ -789,8 +789,8 @@ diff -ur a/sql/item_cmpfunc.cc b/sql/item_cmpfunc.cc
  
  int Arg_comparator::compare_row()
 diff -ur a/sql/item_cmpfunc.h b/sql/item_cmpfunc.h
---- a/sql/item_cmpfunc.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_cmpfunc.h  2013-10-08 15:11:55.000000000 +0100
+--- a/sql/item_cmpfunc.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_cmpfunc.h	2013-10-08 15:11:55.000000000 +0100
 @@ -400,7 +400,7 @@
      Item_func::print_op(str, query_type);
    }
@@ -810,8 +810,8 @@ diff -ur a/sql/item_cmpfunc.h b/sql/item_cmpfunc.h
    virtual Item_result result_type()= 0;
  };
 diff -ur a/sql/item_func.cc b/sql/item_func.cc
---- a/sql/item_func.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_func.cc  2013-10-08 15:24:40.000000000 +0100
+--- a/sql/item_func.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_func.cc	2013-10-08 15:24:40.000000000 +0100
 @@ -2474,7 +2474,7 @@
    case INT_RESULT:
      if ((!decimals_to_set && truncate) || (args[0]->decimal_precision() < DECIMAL_LONGLONG_DIGITS))
@@ -825,8 +825,8 @@ diff -ur a/sql/item_func.cc b/sql/item_func.cc
  
    mysql_cond_destroy(&cond);
  
--  return test(!error);     // Return 1 killed
-+  return mysql_test(!error);     // Return 1 killed
+-  return test(!error); 		// Return 1 killed
++  return mysql_test(!error); 		// Return 1 killed
  }
  
  
@@ -849,8 +849,8 @@ diff -ur a/sql/item_func.cc b/sql/item_func.cc
    DBUG_VOID_RETURN;
  }
 diff -ur a/sql/item_geofunc.cc b/sql/item_geofunc.cc
---- a/sql/item_geofunc.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_geofunc.cc 2013-10-08 15:24:41.000000000 +0100
+--- a/sql/item_geofunc.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_geofunc.cc	2013-10-08 15:24:41.000000000 +0100
 @@ -261,7 +261,7 @@
    srid= uint4korr(swkb->ptr());
    str->q_append(srid);
@@ -861,8 +861,8 @@ diff -ur a/sql/item_geofunc.cc b/sql/item_geofunc.cc
  
  
 diff -ur a/sql/item_strfunc.cc b/sql/item_strfunc.cc
---- a/sql/item_strfunc.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_strfunc.cc 2013-10-08 15:24:41.000000000 +0100
+--- a/sql/item_strfunc.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_strfunc.cc	2013-10-08 15:24:41.000000000 +0100
 @@ -100,7 +100,7 @@
    bool res= Item_func::fix_fields(thd, ref);
    /*
@@ -873,8 +873,8 @@ diff -ur a/sql/item_strfunc.cc b/sql/item_strfunc.cc
    maybe_null= (maybe_null || thd->is_strict_mode());
    return res;
 diff -ur a/sql/item_subselect.cc b/sql/item_subselect.cc
---- a/sql/item_subselect.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_subselect.cc 2013-10-08 15:24:42.000000000 +0100
+--- a/sql/item_subselect.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_subselect.cc	2013-10-08 15:24:42.000000000 +0100
 @@ -3615,7 +3615,7 @@
                           /* TODO:
                              the NULL byte is taken into account in
@@ -894,8 +894,8 @@ diff -ur a/sql/item_subselect.cc b/sql/item_subselect.cc
  
      /*
 diff -ur a/sql/item_subselect.h b/sql/item_subselect.h
---- a/sql/item_subselect.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_subselect.h  2013-10-08 15:11:56.000000000 +0100
+--- a/sql/item_subselect.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_subselect.h	2013-10-08 15:11:56.000000000 +0100
 @@ -433,7 +433,7 @@
      if ( pushed_cond_guards)
        pushed_cond_guards[i]= v;
@@ -906,8 +906,8 @@ diff -ur a/sql/item_subselect.h b/sql/item_subselect.h
    Item_in_subselect(Item * left_expr, st_select_lex *select_lex);
    Item_in_subselect()
 diff -ur a/sql/item_sum.cc b/sql/item_sum.cc
---- a/sql/item_sum.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_sum.cc 2013-10-08 15:24:42.000000000 +0100
+--- a/sql/item_sum.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_sum.cc	2013-10-08 15:24:42.000000000 +0100
 @@ -3426,7 +3426,7 @@
  {
    List<Item> list;
@@ -918,8 +918,8 @@ diff -ur a/sql/item_sum.cc b/sql/item_sum.cc
  
    /*
 diff -ur a/sql/item_timefunc.cc b/sql/item_timefunc.cc
---- a/sql/item_timefunc.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/item_timefunc.cc  2013-10-08 15:24:43.000000000 +0100
+--- a/sql/item_timefunc.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/item_timefunc.cc	2013-10-08 15:24:43.000000000 +0100
 @@ -1337,7 +1337,7 @@
  
    return (longlong) calc_weekday(calc_daynr(ltime.year, ltime.month,
@@ -930,15 +930,15 @@ diff -ur a/sql/item_timefunc.cc b/sql/item_timefunc.cc
  
  void Item_func_dayname::fix_length_and_dec()
 diff -ur a/sql/key.cc b/sql/key.cc
---- a/sql/key.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/key.cc  2013-10-08 15:24:44.000000000 +0100
+--- a/sql/key.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/key.cc	2013-10-08 15:24:44.000000000 +0100
 @@ -123,7 +123,7 @@
    {
      if (key_part->null_bit)
      {
 -      *to_key++= test(from_record[key_part->null_offset] &
 +      *to_key++= mysql_test(from_record[key_part->null_offset] &
-       key_part->null_bit);
+ 		   key_part->null_bit);
        key_length--;
      }
 @@ -299,7 +299,7 @@
@@ -947,8 +947,8 @@ diff -ur a/sql/key.cc b/sql/key.cc
      {
 -      if (*key != test(table->record[0][key_part->null_offset] & 
 +      if (*key != mysql_test(table->record[0][key_part->null_offset] & 
-           key_part->null_bit))
-  return 1;
+ 		       key_part->null_bit))
+ 	return 1;
        if (*key)
 @@ -438,7 +438,7 @@
        }
@@ -960,8 +960,8 @@ diff -ur a/sql/key.cc b/sql/key.cc
    dbug_tmp_restore_column_map(table->read_set, old_map);
    DBUG_VOID_RETURN;
 diff -ur a/sql/log_event.cc b/sql/log_event.cc
---- a/sql/log_event.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/log_event.cc  2013-10-08 15:24:44.000000000 +0100
+--- a/sql/log_event.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/log_event.cc	2013-10-08 15:24:44.000000000 +0100
 @@ -644,7 +644,7 @@
    {
      if (*need_comma)
@@ -972,8 +972,8 @@ diff -ur a/sql/log_event.cc b/sql/log_event.cc
    }
  }
 diff -ur a/sql/mysqld.cc b/sql/mysqld.cc
---- a/sql/mysqld.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/mysqld.cc 2013-10-08 15:24:45.000000000 +0100
+--- a/sql/mysqld.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/mysqld.cc	2013-10-08 15:24:45.000000000 +0100
 @@ -8304,7 +8304,7 @@
      opt_myisam_log=1;
      break;
@@ -1002,8 +1002,8 @@ diff -ur a/sql/mysqld.cc b/sql/mysqld.cc
  
    opt_readonly= read_only;
 diff -ur a/sql/net_serv.cc b/sql/net_serv.cc
---- a/sql/net_serv.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/net_serv.cc 2013-10-08 15:24:46.000000000 +0100
+--- a/sql/net_serv.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/net_serv.cc	2013-10-08 15:24:46.000000000 +0100
 @@ -316,7 +316,7 @@
  #ifndef DEBUG_DATA_PACKETS
    DBUG_DUMP("packet_header", buff, NET_HEADER_SIZE);
@@ -1041,17 +1041,17 @@ diff -ur a/sql/net_serv.cc b/sql/net_serv.cc
  
  
 diff -ur a/sql/opt_range.cc b/sql/opt_range.cc
---- a/sql/opt_range.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/opt_range.cc  2013-10-08 15:24:46.000000000 +0100
+--- a/sql/opt_range.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/opt_range.cc	2013-10-08 15:24:46.000000000 +0100
 @@ -468,7 +468,7 @@
        new_max=arg->max_value; flag_max=arg->max_flag;
      }
      return new SEL_ARG(field, part, new_min, new_max, flag_min, flag_max,
--          test(maybe_flag && arg->maybe_flag));
-+          mysql_test(maybe_flag && arg->maybe_flag));
+-		       test(maybe_flag && arg->maybe_flag));
++		       mysql_test(maybe_flag && arg->maybe_flag));
    }
    SEL_ARG *clone_first(SEL_ARG *arg)
-   {            // min <= X < arg->min
+   {						// min <= X < arg->min
 @@ -2947,7 +2947,7 @@
      Assume that if the user is using 'limit' we will only need to scan
      limit rows if we are using a key
@@ -1115,15 +1115,15 @@ diff -ur a/sql/opt_range.cc b/sql/opt_range.cc
 @@ -10660,7 +10660,7 @@
      const bool sorted= (mrr_flags & HA_MRR_SORTED);
      result= file->read_range_first(last_range->min_keypart_map ? &start_key : 0,
-           last_range->max_keypart_map ? &end_key : 0,
+ 				   last_range->max_keypart_map ? &end_key : 0,
 -                                   test(last_range->flag & EQ_RANGE),
 +                                   mysql_test(last_range->flag & EQ_RANGE),
-           sorted);
+ 				   sorted);
      if (last_range->flag == (UNIQUE_RANGE | EQ_RANGE))
-       last_range= 0;     // Stop searching
+       last_range= 0;			// Stop searching
 diff -ur a/sql/opt_range.h b/sql/opt_range.h
---- a/sql/opt_range.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/opt_range.h 2013-10-08 15:11:56.000000000 +0100
+--- a/sql/opt_range.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/opt_range.h	2013-10-08 15:11:56.000000000 +0100
 @@ -596,7 +596,7 @@
    THD *thd;
    int read_keys_and_merge();
@@ -1134,8 +1134,8 @@ diff -ur a/sql/opt_range.h b/sql/opt_range.h
    virtual bool is_valid()
    {
 diff -ur a/sql/opt_sum.cc b/sql/opt_sum.cc
---- a/sql/opt_sum.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/opt_sum.cc  2013-10-08 15:24:47.000000000 +0100
+--- a/sql/opt_sum.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/opt_sum.cc	2013-10-08 15:24:47.000000000 +0100
 @@ -304,7 +304,7 @@
      }
      else
@@ -1173,8 +1173,8 @@ diff -ur a/sql/opt_sum.cc b/sql/opt_sum.cc
    }
    else if (is_field_part)
 diff -ur a/sql/password.c b/sql/password.c
---- a/sql/password.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/password.c  2013-10-08 15:11:57.000000000 +0100
+--- a/sql/password.c	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/password.c	2013-10-08 15:11:57.000000000 +0100
 @@ -545,7 +545,7 @@
    /* now buf supposedly contains hash_stage1: so we can get hash_stage2 */
    compute_sha1_hash(hash_stage2_reassured, (const char *) buf, SHA1_HASH_SIZE);
@@ -1185,8 +1185,8 @@ diff -ur a/sql/password.c b/sql/password.c
  
  my_bool
 diff -ur a/sql/rpl_mi.cc b/sql/rpl_mi.cc
---- a/sql/rpl_mi.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/rpl_mi.cc 2013-10-08 15:24:48.000000000 +0100
+--- a/sql/rpl_mi.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/rpl_mi.cc	2013-10-08 15:24:48.000000000 +0100
 @@ -478,10 +478,10 @@
        DBUG_RETURN(true);
    }
@@ -1202,8 +1202,8 @@ diff -ur a/sql/rpl_mi.cc b/sql/rpl_mi.cc
    if (auto_position != 0 && gtid_mode != 3)
    {
 diff -ur a/sql/rpl_slave.cc b/sql/rpl_slave.cc
---- a/sql/rpl_slave.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/rpl_slave.cc  2013-10-08 15:24:48.000000000 +0100
+--- a/sql/rpl_slave.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/rpl_slave.cc	2013-10-08 15:24:48.000000000 +0100
 @@ -3557,7 +3557,7 @@
          "skipped because event skip counter was non-zero"
        };
@@ -1214,8 +1214,8 @@ diff -ur a/sql/rpl_slave.cc b/sql/rpl_slave.cc
        DBUG_PRINT("skip_event", ("%s event was %s",
                                  ev->get_type_str(), explain[reason]));
 diff -ur a/sql/set_var.cc b/sql/set_var.cc
---- a/sql/set_var.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/set_var.cc  2013-10-08 15:24:49.000000000 +0100
+--- a/sql/set_var.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/set_var.cc	2013-10-08 15:24:49.000000000 +0100
 @@ -566,7 +566,7 @@
      if ((error= var->check(thd)))
        goto err;
@@ -1226,20 +1226,20 @@ diff -ur a/sql/set_var.cc b/sql/set_var.cc
      it.rewind();
      while ((var= it++))
 diff -ur a/sql/sp_head.h b/sql/sp_head.h
---- a/sql/sp_head.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sp_head.h 2013-10-08 15:11:57.000000000 +0100
+--- a/sql/sp_head.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sp_head.h	2013-10-08 15:11:57.000000000 +0100
 @@ -859,7 +859,7 @@
      else if (m_flags & HAS_SQLCOM_FLUSH)
        my_error(ER_STMT_NOT_ALLOWED_IN_SF_OR_TRG, MYF(0), "FLUSH");
  
 -    return test(m_flags &
 +    return mysql_test(m_flags &
-    (CONTAINS_DYNAMIC_SQL|MULTI_RESULTS|HAS_SET_AUTOCOMMIT_STMT|
+ 		(CONTAINS_DYNAMIC_SQL|MULTI_RESULTS|HAS_SET_AUTOCOMMIT_STMT|
                   HAS_COMMIT_OR_ROLLBACK|HAS_SQLCOM_RESET|HAS_SQLCOM_FLUSH));
    }
 diff -ur a/sql/sp_rcontext.h b/sql/sp_rcontext.h
---- a/sql/sp_rcontext.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sp_rcontext.h 2013-10-08 15:11:57.000000000 +0100
+--- a/sql/sp_rcontext.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sp_rcontext.h	2013-10-08 15:11:57.000000000 +0100
 @@ -453,7 +453,7 @@
    bool close(THD *thd);
  
@@ -1250,8 +1250,8 @@ diff -ur a/sql/sp_rcontext.h b/sql/sp_rcontext.h
    bool fetch(THD *thd, List<sp_variable> *vars);
  
 diff -ur a/sql/sql_acl.cc b/sql/sql_acl.cc
---- a/sql/sql_acl.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_acl.cc  2013-10-08 15:24:49.000000000 +0100
+--- a/sql/sql_acl.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_acl.cc	2013-10-08 15:24:49.000000000 +0100
 @@ -2863,9 +2863,9 @@
  static bool test_if_create_new_users(THD *thd)
  {
@@ -1267,7 +1267,7 @@ diff -ur a/sql/sql_acl.cc b/sql/sql_acl.cc
 @@ -4639,7 +4639,7 @@
      /* Create user if needed */
      error=replace_user_table(thd, tables[0].table, Str,
-           0, revoke_grant, create_new_users,
+ 			     0, revoke_grant, create_new_users,
 -                             test(thd->variables.sql_mode &
 +                             mysql_test(thd->variables.sql_mode &
                                    MODE_NO_AUTO_CREATE_USER));
@@ -1276,7 +1276,7 @@ diff -ur a/sql/sql_acl.cc b/sql/sql_acl.cc
 @@ -4884,7 +4884,7 @@
      /* Create user if needed */
      error=replace_user_table(thd, tables[0].table, Str,
-           0, revoke_grant, create_new_users,
+ 			     0, revoke_grant, create_new_users,
 -                             test(thd->variables.sql_mode &
 +                             mysql_test(thd->variables.sql_mode &
                                    MODE_NO_AUTO_CREATE_USER));
@@ -1310,8 +1310,8 @@ diff -ur a/sql/sql_acl.cc b/sql/sql_acl.cc
  
    if (table_ref->view || table_ref->field_translation)
 diff -ur a/sql/sql_admin.cc b/sql/sql_admin.cc
---- a/sql/sql_admin.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_admin.cc  2013-10-08 15:24:50.000000000 +0100
+--- a/sql/sql_admin.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_admin.cc	2013-10-08 15:24:50.000000000 +0100
 @@ -1123,7 +1123,7 @@
    thd->enable_slow_log= opt_log_slow_admin_statements;
    res= mysql_admin_table(thd, first_table, &thd->lex->check_opt, "repair",
@@ -1322,8 +1322,8 @@ diff -ur a/sql/sql_admin.cc b/sql/sql_admin.cc
                           &handler::ha_repair, 0);
  
 diff -ur a/sql/sql_base.cc b/sql/sql_base.cc
---- a/sql/sql_base.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_base.cc 2013-10-08 15:24:51.000000000 +0100
+--- a/sql/sql_base.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_base.cc	2013-10-08 15:24:51.000000000 +0100
 @@ -1612,7 +1612,7 @@
  
    /* We always quote db,table names though it is slight overkill */
@@ -1352,8 +1352,8 @@ diff -ur a/sql/sql_base.cc b/sql/sql_base.cc
  err_no_arena:
    select_lex->is_item_list_lookup= save_is_item_list_lookup;
 diff -ur a/sql/sql_bitmap.h b/sql/sql_bitmap.h
---- a/sql/sql_bitmap.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_bitmap.h  2013-10-08 15:11:57.000000000 +0100
+--- a/sql/sql_bitmap.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_bitmap.h	2013-10-08 15:11:57.000000000 +0100
 @@ -60,7 +60,7 @@
      intersect(map2buff);
      if (map.n_bits > sizeof(ulonglong) * 8)
@@ -1373,8 +1373,8 @@ diff -ur a/sql/sql_bitmap.h b/sql/sql_bitmap.h
    my_bool is_clear_all() const { return map == (ulonglong)0; }
    my_bool is_set_all() const { return map == ~(ulonglong)0; }
 diff -ur a/sql/sql_cache.cc b/sql/sql_cache.cc
---- a/sql/sql_cache.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_cache.cc  2013-10-08 15:24:51.000000000 +0100
+--- a/sql/sql_cache.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_cache.cc	2013-10-08 15:24:51.000000000 +0100
 @@ -1209,8 +1209,8 @@
      Query_cache_query_flags flags;
      // fill all gaps between fields with 0 to get repeatable key
@@ -1419,7 +1419,7 @@ diff -ur a/sql/sql_cache.cc b/sql/sql_cache.cc
    flags.character_set_client_num= thd->variables.character_set_client->number;
    flags.character_set_results_num=
 @@ -3051,7 +3051,7 @@
-   tmp++)
+ 	 tmp++)
        unlink_table(tmp);
    }
 -  return test(n);
@@ -1428,8 +1428,8 @@ diff -ur a/sql/sql_cache.cc b/sql/sql_cache.cc
  
  
 diff -ur a/sql/sql_class.cc b/sql/sql_class.cc
---- a/sql/sql_class.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_class.cc  2013-10-08 15:24:52.000000000 +0100
+--- a/sql/sql_class.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_class.cc	2013-10-08 15:24:52.000000000 +0100
 @@ -553,14 +553,14 @@
  extern "C"
  int thd_in_lock_tables(const THD *thd)
@@ -1468,8 +1468,8 @@ diff -ur a/sql/sql_class.cc b/sql/sql_class.cc
                   (int) (uchar) (*exchange->line_term)[0] : INT_MAX);
    if (!field_term_length)
 diff -ur a/sql/sql_class.h b/sql/sql_class.h
---- a/sql/sql_class.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_class.h 2013-10-08 15:11:57.000000000 +0100
+--- a/sql/sql_class.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_class.h	2013-10-08 15:11:57.000000000 +0100
 @@ -3193,7 +3193,7 @@
    }
    inline bool is_strict_mode() const
@@ -1489,8 +1489,8 @@ diff -ur a/sql/sql_class.h b/sql/sql_class.h
    {
      db.str= db_name; db.length= (uint) strlen(db_name);
 diff -ur a/sql/sql_delete.cc b/sql/sql_delete.cc
---- a/sql/sql_delete.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_delete.cc 2013-10-08 15:24:53.000000000 +0100
+--- a/sql/sql_delete.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_delete.cc	2013-10-08 15:24:53.000000000 +0100
 @@ -119,7 +119,7 @@
      DBUG_RETURN(true);
  
@@ -1501,8 +1501,8 @@ diff -ur a/sql/sql_delete.cc b/sql/sql_delete.cc
    {
      my_message(ER_UPDATE_WITHOUT_KEY_IN_SAFE_MODE,
 diff -ur a/sql/sql_executor.cc b/sql/sql_executor.cc
---- a/sql/sql_executor.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_executor.cc 2013-10-08 15:24:53.000000000 +0100
+--- a/sql/sql_executor.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_executor.cc	2013-10-08 15:24:53.000000000 +0100
 @@ -1455,7 +1455,7 @@
  
    if (condition)
@@ -1522,8 +1522,8 @@ diff -ur a/sql/sql_executor.cc b/sql/sql_executor.cc
    }
    if (!table->null_row)
 diff -ur a/sql/sql_insert.cc b/sql/sql_insert.cc
---- a/sql/sql_insert.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_insert.cc 2013-10-08 15:24:54.000000000 +0100
+--- a/sql/sql_insert.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_insert.cc	2013-10-08 15:24:54.000000000 +0100
 @@ -793,7 +793,7 @@
                                             update,
                                             update_fields,
@@ -1552,11 +1552,11 @@ diff -ur a/sql/sql_insert.cc b/sql/sql_insert.cc
    tmp_table.null_row=tmp_table.maybe_null=0;
  
 diff -ur a/sql/sql_join_buffer.cc b/sql/sql_join_buffer.cc
---- a/sql/sql_join_buffer.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_join_buffer.cc  2013-10-08 15:24:54.000000000 +0100
+--- a/sql/sql_join_buffer.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_join_buffer.cc	2013-10-08 15:24:54.000000000 +0100
 @@ -184,8 +184,8 @@
    for ( ; tab < join_tab ; tab++)
-   {      
+   {	    
      calc_used_field_length(join->thd, tab);
 -    flag_fields+= test(tab->used_null_fields || tab->used_uneven_bit_fields);
 -    flag_fields+= test(tab->table->maybe_null);
@@ -1602,8 +1602,8 @@ diff -ur a/sql/sql_join_buffer.cc b/sql/sql_join_buffer.cc
    /* This function may be called only for inner tables of outer joins */ 
    DBUG_ASSERT(join_tab->first_inner);
 diff -ur a/sql/sql_lex.cc b/sql/sql_lex.cc
---- a/sql/sql_lex.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_lex.cc  2013-10-08 15:24:55.000000000 +0100
+--- a/sql/sql_lex.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_lex.cc	2013-10-08 15:24:55.000000000 +0100
 @@ -248,7 +248,7 @@
    m_cpp_utf8_processed_ptr= NULL;
    next_state= MY_LEX_START;
@@ -1623,8 +1623,8 @@ diff -ur a/sql/sql_lex.cc b/sql/sql_lex.cc
        select_lex.context.table_list= 
          select_lex.context.first_name_resolution_table= first->next_local;
 diff -ur a/sql/sql_lex.h b/sql/sql_lex.h
---- a/sql/sql_lex.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_lex.h 2013-10-08 15:11:59.000000000 +0100
+--- a/sql/sql_lex.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_lex.h	2013-10-08 15:11:59.000000000 +0100
 @@ -1207,7 +1207,7 @@
    }
    bool requires_prelocking()
@@ -1635,8 +1635,8 @@ diff -ur a/sql/sql_lex.h b/sql/sql_lex.h
    void mark_as_requiring_prelocking(TABLE_LIST **tables_own_last)
    {
 diff -ur a/sql/sql_load.cc b/sql/sql_load.cc
---- a/sql/sql_load.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_load.cc 2013-10-08 15:24:56.000000000 +0100
+--- a/sql/sql_load.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_load.cc	2013-10-08 15:24:56.000000000 +0100
 @@ -475,7 +475,7 @@
      }
    }
@@ -1674,14 +1674,14 @@ diff -ur a/sql/sql_load.cc b/sql/sql_load.cc
  
  
 diff -ur a/sql/sql_optimizer.cc b/sql/sql_optimizer.cc
---- a/sql/sql_optimizer.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_optimizer.cc  2013-10-08 15:24:57.000000000 +0100
+--- a/sql/sql_optimizer.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_optimizer.cc	2013-10-08 15:24:57.000000000 +0100
 @@ -752,13 +752,13 @@
    need_tmp= ((!plan_is_const() &&
-       ((select_distinct || !simple_order || !simple_group) ||
-        (group_list && order) ||
--       test(select_options & OPTION_BUFFER_RESULT))) ||
-+       mysql_test(select_options & OPTION_BUFFER_RESULT))) ||
+ 	     ((select_distinct || !simple_order || !simple_group) ||
+ 	      (group_list && order) ||
+-	      test(select_options & OPTION_BUFFER_RESULT))) ||
++	      mysql_test(select_options & OPTION_BUFFER_RESULT))) ||
               (rollup.state != ROLLUP::STATE_NONE && select_distinct));
  
    /* Perform FULLTEXT search before all regular searches */
@@ -1713,8 +1713,8 @@ diff -ur a/sql/sql_optimizer.cc b/sql/sql_optimizer.cc
    /* Place rows that are not 'OPTIMIZE_REF_OR_NULL' first */
    return (int) ((a->optimize & KEY_OPTIMIZE_REF_OR_NULL) -
 diff -ur a/sql/sql_optimizer.h b/sql/sql_optimizer.h
---- a/sql/sql_optimizer.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_optimizer.h 2013-10-08 15:12:00.000000000 +0100
+--- a/sql/sql_optimizer.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_optimizer.h	2013-10-08 15:12:00.000000000 +0100
 @@ -433,7 +433,7 @@
      result= result_arg;
      lock= thd_arg->lock;
@@ -1725,11 +1725,11 @@ diff -ur a/sql/sql_optimizer.h b/sql/sql_optimizer.h
      simple_order= 0;
      simple_group= 0;
 diff -ur a/sql/sql_parse.cc b/sql/sql_parse.cc
---- a/sql/sql_parse.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_parse.cc  2013-10-08 15:24:58.000000000 +0100
+--- a/sql/sql_parse.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_parse.cc	2013-10-08 15:24:58.000000000 +0100
 @@ -6470,7 +6470,7 @@
    if (!table)
-     DBUG_RETURN(0);        // End of memory
+     DBUG_RETURN(0);				// End of memory
    alias_str= alias ? alias->str : table->table.str;
 -  if (!test(table_options & TL_OPTION_ALIAS))
 +  if (!mysql_test(table_options & TL_OPTION_ALIAS))
@@ -1747,7 +1747,7 @@ diff -ur a/sql/sql_parse.cc b/sql/sql_parse.cc
 -  ptr->ignore_leaves= test(table_options & TL_OPTION_IGNORE_LEAVES);
 +  ptr->force_index= mysql_test(table_options & TL_OPTION_FORCE_INDEX);
 +  ptr->ignore_leaves= mysql_test(table_options & TL_OPTION_IGNORE_LEAVES);
-   ptr->derived=      table->sel;
+   ptr->derived=	    table->sel;
    if (!ptr->derived && is_infoschema_db(ptr->db, ptr->db_length))
    {
 @@ -6614,7 +6614,7 @@
@@ -1760,8 +1760,8 @@ diff -ur a/sql/sql_parse.cc b/sql/sql_parse.cc
      ptr->mdl_request.init(MDL_key::TABLE, ptr->db, ptr->table_name, mdl_type,
                            MDL_TRANSACTION);
 diff -ur a/sql/sql_partition.cc b/sql/sql_partition.cc
---- a/sql/sql_partition.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_partition.cc  2013-10-08 15:25:00.000000000 +0100
+--- a/sql/sql_partition.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_partition.cc	2013-10-08 15:25:00.000000000 +0100
 @@ -3377,7 +3377,7 @@
      }
      else 
@@ -1810,8 +1810,8 @@ diff -ur a/sql/sql_partition.cc b/sql/sql_partition.cc
  
    /*
 diff -ur a/sql/sql_planner.cc b/sql/sql_planner.cc
---- a/sql/sql_planner.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_planner.cc  2013-10-08 15:25:00.000000000 +0100
+--- a/sql/sql_planner.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_planner.cc	2013-10-08 15:25:00.000000000 +0100
 @@ -193,7 +193,7 @@
      }
    }
@@ -1867,8 +1867,8 @@ diff -ur a/sql/sql_planner.cc b/sql/sql_planner.cc
  
    if (emb_sjm_nest)
 diff -ur a/sql/sql_prepare.cc b/sql/sql_prepare.cc
---- a/sql/sql_prepare.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_prepare.cc  2013-10-08 15:25:01.000000000 +0100
+--- a/sql/sql_prepare.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_prepare.cc	2013-10-08 15:25:01.000000000 +0100
 @@ -981,7 +981,7 @@
  
        typecode= sint2korr(read_pos);
@@ -1888,8 +1888,8 @@ diff -ur a/sql/sql_prepare.cc b/sql/sql_prepare.cc
    thd->protocol= &thd->protocol_binary;
    stmt->execute_loop(&expanded_query, open_cursor, packet, packet_end);
 diff -ur a/sql/sql_prepare.h b/sql/sql_prepare.h
---- a/sql/sql_prepare.h 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_prepare.h 2013-10-08 15:12:00.000000000 +0100
+--- a/sql/sql_prepare.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_prepare.h	2013-10-08 15:12:00.000000000 +0100
 @@ -289,7 +289,7 @@
      one.
      Never fails.
@@ -1909,8 +1909,8 @@ diff -ur a/sql/sql_prepare.h b/sql/sql_prepare.h
  
    ~Ed_connection() { free_old_result(); }
 diff -ur a/sql/sql_select.cc b/sql/sql_select.cc
---- a/sql/sql_select.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_select.cc 2013-10-08 15:25:01.000000000 +0100
+--- a/sql/sql_select.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_select.cc	2013-10-08 15:25:01.000000000 +0100
 @@ -789,7 +789,7 @@
    }
  
@@ -1939,7 +1939,7 @@ diff -ur a/sql/sql_select.cc b/sql/sql_select.cc
        if (keyuse->val->type() == Item::FIELD_ITEM)
        {
 @@ -1928,7 +1928,7 @@
-    new_cond->argument_list()->push_back(fix);
+ 	  new_cond->argument_list()->push_back(fix);
            used_tables|= fix->used_tables();
          }
 -        n_marked += test(item->marker == ICP_COND_USES_INDEX_ONLY);
@@ -1948,9 +1948,9 @@ diff -ur a/sql/sql_select.cc b/sql/sql_select.cc
        if (n_marked ==((Item_cond*)cond)->argument_list()->elements)
          cond->marker= ICP_COND_USES_INDEX_ONLY;
 @@ -1957,7 +1957,7 @@
-  if (!fix)
-    return NULL;
-  new_cond->argument_list()->push_back(fix);
+ 	if (!fix)
+ 	  return NULL;
+ 	new_cond->argument_list()->push_back(fix);
 -        n_marked += test(item->marker == ICP_COND_USES_INDEX_ONLY);
 +        n_marked += mysql_test(item->marker == ICP_COND_USES_INDEX_ONLY);
        }
@@ -1984,8 +1984,8 @@ diff -ur a/sql/sql_select.cc b/sql/sql_select.cc
        DBUG_ASSERT(!join_tab[curr_tmp_table].table->group); 
      }
 diff -ur a/sql/sql_select.h b/sql/sql_select.h
---- a/sql/sql_select.h  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_select.h  2013-10-08 15:12:00.000000000 +0100
+--- a/sql/sql_select.h	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_select.h	2013-10-08 15:12:00.000000000 +0100
 @@ -808,7 +808,7 @@
        used_rowid_fields= 1;
        used_fieldlength+= table->file->ref_length;
@@ -1996,8 +1996,8 @@ diff -ur a/sql/sql_select.h b/sql/sql_select.h
    bool is_inner_table_of_outer_join()
    {
 diff -ur a/sql/sql_show.cc b/sql/sql_show.cc
---- a/sql/sql_show.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_show.cc 2013-10-08 15:25:02.000000000 +0100
+--- a/sql/sql_show.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_show.cc	2013-10-08 15:25:02.000000000 +0100
 @@ -740,7 +740,7 @@
      m_view_access_denied_message_ptr(NULL) 
    {
@@ -2052,14 +2052,14 @@ diff -ur a/sql/sql_show.cc b/sql/sql_show.cc
          if (key_info->flags & HA_USES_COMMENT)
            table->field[15]->store(key_info->comment.str, 
 diff -ur a/sql/sql_table.cc b/sql/sql_table.cc
---- a/sql/sql_table.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_table.cc  2013-10-08 15:25:03.000000000 +0100
+--- a/sql/sql_table.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_table.cc	2013-10-08 15:25:03.000000000 +0100
 @@ -3873,7 +3873,7 @@
-    with length (unlike blobs, where ft code takes data length from a
-    data prefix, ignoring column->length).
-  */
-- column->length=test(f_is_blob(sql_field->pack_flag));
-+ column->length=mysql_test(f_is_blob(sql_field->pack_flag));
+ 	  with length (unlike blobs, where ft code takes data length from a
+ 	  data prefix, ignoring column->length).
+ 	*/
+-	column->length=test(f_is_blob(sql_field->pack_flag));
++	column->length=mysql_test(f_is_blob(sql_field->pack_flag));
        }
        else
        {
@@ -2082,8 +2082,8 @@ diff -ur a/sql/sql_table.cc b/sql/sql_table.cc
                                    no_substitution, 1)))
      DBUG_RETURN(true);
 diff -ur a/sql/sql_time.cc b/sql/sql_time.cc
---- a/sql/sql_time.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_time.cc 2013-10-08 15:25:03.000000000 +0100
+--- a/sql/sql_time.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_time.cc	2013-10-08 15:25:03.000000000 +0100
 @@ -105,9 +105,9 @@
    uint days;
    ulong daynr=calc_daynr(l_time->year,l_time->month,l_time->day);
@@ -2098,8 +2098,8 @@ diff -ur a/sql/sql_time.cc b/sql/sql_time.cc
    uint weekday=calc_weekday(first_daynr, !monday_first);
    *year=l_time->year;
 diff -ur a/sql/sql_tmp_table.cc b/sql/sql_tmp_table.cc
---- a/sql/sql_tmp_table.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_tmp_table.cc  2013-10-08 15:25:04.000000000 +0100
+--- a/sql/sql_tmp_table.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_tmp_table.cc	2013-10-08 15:25:04.000000000 +0100
 @@ -484,7 +484,7 @@
    DBUG_PRINT("enter",
               ("distinct: %d  save_sum_fields: %d  rows_limit: %lu  group: %d",
@@ -2110,7 +2110,7 @@ diff -ur a/sql/sql_tmp_table.cc b/sql/sql_tmp_table.cc
    thd->inc_status_created_tmp_tables();
  
 @@ -1009,7 +1009,7 @@
-     table->group=group;        /* Table is grouped by key */
+     table->group=group;				/* Table is grouped by key */
      param->group_buff=group_buff;
      share->keys=1;
 -    share->uniques= test(using_unique_constraint);
@@ -2120,13 +2120,13 @@ diff -ur a/sql/sql_tmp_table.cc b/sql/sql_tmp_table.cc
      keyinfo->flags=HA_NOSAME;
 @@ -1031,7 +1031,7 @@
        {
-  cur_group->buff=(char*) group_buff;
-  cur_group->field= field->new_key_field(thd->mem_root, table,
+ 	cur_group->buff=(char*) group_buff;
+ 	cur_group->field= field->new_key_field(thd->mem_root, table,
 -                                               group_buff + test(maybe_null));
 +                                               group_buff + mysql_test(maybe_null));
  
-  if (!cur_group->field)
-    goto err; /* purecov: inspected */
+ 	if (!cur_group->field)
+ 	  goto err; /* purecov: inspected */
 @@ -1079,7 +1079,7 @@
      null_pack_length-=hidden_null_pack_length;
      keyinfo->user_defined_key_parts= 
@@ -2146,8 +2146,8 @@ diff -ur a/sql/sql_tmp_table.cc b/sql/sql_tmp_table.cc
      keyinfo->key_part=key_part_info;
      keyinfo->actual_flags= keyinfo->flags= HA_NOSAME;
 diff -ur a/sql/sql_union.cc b/sql/sql_union.cc
---- a/sql/sql_union.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_union.cc  2013-10-08 15:25:04.000000000 +0100
+--- a/sql/sql_union.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_union.cc	2013-10-08 15:25:04.000000000 +0100
 @@ -271,7 +271,7 @@
    bool is_union_select;
    DBUG_ENTER("st_select_lex_unit::prepare");
@@ -2167,20 +2167,20 @@ diff -ur a/sql/sql_union.cc b/sql/sql_union.cc
        goto err;
      memset(&result_table_list, 0, sizeof(result_table_list));
 diff -ur a/sql/sql_update.cc b/sql/sql_update.cc
---- a/sql/sql_update.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sql_update.cc 2013-10-08 15:25:05.000000000 +0100
+--- a/sql/sql_update.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sql_update.cc	2013-10-08 15:25:05.000000000 +0100
 @@ -222,7 +222,7 @@
                   ha_rows *found_return, ha_rows *updated_return)
  {
-   bool   using_limit= limit != HA_POS_ERROR;
--  bool   safe_update= test(thd->variables.option_bits & OPTION_SAFE_UPDATES);
-+  bool   safe_update= mysql_test(thd->variables.option_bits & OPTION_SAFE_UPDATES);
+   bool		using_limit= limit != HA_POS_ERROR;
+-  bool		safe_update= test(thd->variables.option_bits & OPTION_SAFE_UPDATES);
++  bool		safe_update= mysql_test(thd->variables.option_bits & OPTION_SAFE_UPDATES);
    bool          used_key_is_modified= FALSE, transactional_table, will_batch;
    int           res;
    int           error= 1;
 diff -ur a/sql/sys_vars.cc b/sql/sys_vars.cc
---- a/sql/sys_vars.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/sys_vars.cc 2013-10-08 15:25:05.000000000 +0100
+--- a/sql/sys_vars.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/sys_vars.cc	2013-10-08 15:25:05.000000000 +0100
 @@ -2063,7 +2063,7 @@
  {
    SV *sv= (type == OPT_GLOBAL) ? &global_system_variables : &thd->variables;
@@ -2191,8 +2191,8 @@ diff -ur a/sql/sys_vars.cc b/sql/sys_vars.cc
    return false;
  }
 diff -ur a/sql/table.cc b/sql/table.cc
---- a/sql/table.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/table.cc  2013-10-08 15:25:06.000000000 +0100
+--- a/sql/table.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/table.cc	2013-10-08 15:25:06.000000000 +0100
 @@ -1076,7 +1076,7 @@
    }
    share->db_record_offset= 1;
@@ -2242,8 +2242,8 @@ diff -ur a/sql/table.cc b/sql/table.cc
        if (key_info[i].flags & HA_USES_COMMENT)
          key_comment_total_bytes += 2 + key_info[i].comment.length;
 diff -ur a/sql/transaction.cc b/sql/transaction.cc
---- a/sql/transaction.cc  2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/transaction.cc  2013-10-08 15:25:07.000000000 +0100
+--- a/sql/transaction.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/transaction.cc	2013-10-08 15:25:07.000000000 +0100
 @@ -143,7 +143,7 @@
      thd->server_status&=
        ~(SERVER_STATUS_IN_TRANS | SERVER_STATUS_IN_TRANS_READONLY);
@@ -2347,8 +2347,8 @@ diff -ur a/sql/transaction.cc b/sql/transaction.cc
        if (res)
          my_error(ER_XAER_RMERR, MYF(0));
 diff -ur a/sql/tztime.cc b/sql/tztime.cc
---- a/sql/tztime.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/tztime.cc 2013-10-08 15:25:07.000000000 +0100
+--- a/sql/tztime.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/tztime.cc	2013-10-08 15:25:07.000000000 +0100
 @@ -2643,7 +2643,7 @@
    if (TYPE_SIGNED(time_t))
    {
@@ -2359,20 +2359,20 @@ diff -ur a/sql/tztime.cc b/sql/tztime.cc
             (time_t=%d is %d-%d-%d %d:%d:%d)\n",
             (localtime_negative ? "supports" : "doesn't support"), (int)t,
 diff -ur a/sql/unireg.cc b/sql/unireg.cc
---- a/sql/unireg.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql/unireg.cc 2013-10-08 15:25:08.000000000 +0100
+--- a/sql/unireg.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/sql/unireg.cc	2013-10-08 15:25:08.000000000 +0100
 @@ -287,7 +287,7 @@
    maxlength=(uint) next_io_size((ulong) (uint2korr(forminfo_p)+1000));
    int2store(forminfo+2,maxlength);
    int4store(fileinfo+10,(ulong) (filepos+maxlength));
 -  fileinfo[26]= (uchar) test((create_info->max_rows == 1) &&
 +  fileinfo[26]= (uchar) mysql_test((create_info->max_rows == 1) &&
-           (create_info->min_rows == 1) && (keys == 0));
+ 			     (create_info->min_rows == 1) && (keys == 0));
    int2store(fileinfo+28,key_info_length);
  
 diff -ur a/sql-common/client.c b/sql-common/client.c
---- a/sql-common/client.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/sql-common/client.c 2013-10-08 15:12:00.000000000 +0100
+--- a/sql-common/client.c	2013-07-10 17:17:27.000000000 +0100
++++ b/sql-common/client.c	2013-10-08 15:12:00.000000000 +0100
 @@ -1299,7 +1299,7 @@
            options->secure_auth= TRUE;
            break;
@@ -2385,7 +2385,7 @@ diff -ur a/sql-common/client.c b/sql-common/client.c
 @@ -4344,7 +4344,7 @@
      mysql->options.protocol=MYSQL_PROTOCOL_PIPE; /* Force named pipe */
      break;
-   case MYSQL_OPT_LOCAL_INFILE:     /* Allow LOAD DATA LOCAL ?*/
+   case MYSQL_OPT_LOCAL_INFILE:			/* Allow LOAD DATA LOCAL ?*/
 -    if (!arg || test(*(uint*) arg))
 +    if (!arg || mysql_test(*(uint*) arg))
        mysql->options.client_flag|= CLIENT_LOCAL_FILES;
@@ -2401,8 +2401,8 @@ diff -ur a/sql-common/client.c b/sql-common/client.c
    case MYSQL_OPT_RECONNECT:
      mysql->reconnect= *(my_bool *) arg;
 diff -ur a/storage/federated/ha_federated.cc b/storage/federated/ha_federated.cc
---- a/storage/federated/ha_federated.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/federated/ha_federated.cc 2013-10-08 15:25:08.000000000 +0100
+--- a/storage/federated/ha_federated.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/federated/ha_federated.cc	2013-10-08 15:25:08.000000000 +0100
 @@ -1462,7 +1462,7 @@
          ptr was incremented by 1. Since store_length still counts null-byte,
          we need to subtract 1 from store_length.
@@ -2422,8 +2422,8 @@ diff -ur a/storage/federated/ha_federated.cc b/storage/federated/ha_federated.cc
    /*
      buffers for following strings
 diff -ur a/storage/heap/ha_heap.cc b/storage/heap/ha_heap.cc
---- a/storage/heap/ha_heap.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/heap/ha_heap.cc 2013-10-08 15:25:09.000000000 +0100
+--- a/storage/heap/ha_heap.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/heap/ha_heap.cc	2013-10-08 15:25:09.000000000 +0100
 @@ -97,7 +97,7 @@
  
  int ha_heap::open(const char *name, int mode, uint test_if_locked)
@@ -2443,8 +2443,8 @@ diff -ur a/storage/heap/ha_heap.cc b/storage/heap/ha_heap.cc
        file= heap_open_from_share(internal_share, mode);
      else
 diff -ur a/storage/heap/hp_hash.c b/storage/heap/hp_hash.c
---- a/storage/heap/hp_hash.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/heap/hp_hash.c  2013-10-08 15:12:01.000000000 +0100
+--- a/storage/heap/hp_hash.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/heap/hp_hash.c	2013-10-08 15:12:01.000000000 +0100
 @@ -596,7 +596,7 @@
    {
      if (seg->null_bit)
@@ -2452,7 +2452,7 @@ diff -ur a/storage/heap/hp_hash.c b/storage/heap/hp_hash.c
 -      int found_null=test(rec[seg->null_pos] & seg->null_bit);
 +      int found_null=mysql_test(rec[seg->null_pos] & seg->null_bit);
        if (found_null != (int) *key++)
-  return 1;
+ 	return 1;
        if (found_null)
 @@ -684,7 +684,7 @@
      uint char_length= seg->length;
@@ -2473,8 +2473,8 @@ diff -ur a/storage/heap/hp_hash.c b/storage/heap/hp_hash.c
      }
      if (seg->flag & HA_SWAP_KEY)
 diff -ur a/storage/myisam/ft_boolean_search.c b/storage/myisam/ft_boolean_search.c
---- a/storage/myisam/ft_boolean_search.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/ft_boolean_search.c  2013-10-08 15:12:01.000000000 +0100
+--- a/storage/myisam/ft_boolean_search.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/ft_boolean_search.c	2013-10-08 15:12:01.000000000 +0100
 @@ -533,7 +533,7 @@
        {
          if (ftbe->flags & FTB_FLAG_NO ||                     /* 2 */
@@ -2485,8 +2485,8 @@ diff -ur a/storage/myisam/ft_boolean_search.c b/storage/myisam/ft_boolean_search
            FTB_EXPR *top_ftbe=ftbe->up;
            ftbw->docid[0]=HA_OFFSET_ERROR;
 diff -ur a/storage/myisam/ha_myisam.cc b/storage/myisam/ha_myisam.cc
---- a/storage/myisam/ha_myisam.cc 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/ha_myisam.cc 2013-10-08 15:25:09.000000000 +0100
+--- a/storage/myisam/ha_myisam.cc	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/ha_myisam.cc	2013-10-08 15:25:09.000000000 +0100
 @@ -464,8 +464,8 @@
      {
         DBUG_PRINT("error", ("Key %d has different definition", i));
@@ -2510,7 +2510,7 @@ diff -ur a/storage/myisam/ha_myisam.cc b/storage/myisam/ha_myisam.cc
      }
      if ((!mysql_40_compat &&
 @@ -1067,7 +1067,7 @@
-      share->state.key_map);
+ 			share->state.key_map);
      uint testflag=param.testflag;
  #ifdef HAVE_MMAP
 -    bool remap= test(share->file_map);
@@ -2528,25 +2528,25 @@ diff -ur a/storage/myisam/ha_myisam.cc b/storage/myisam/ha_myisam.cc
  
  C_MODE_END
 diff -ur a/storage/myisam/mi_check.c b/storage/myisam/mi_check.c
---- a/storage/myisam/mi_check.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_check.c 2013-10-08 15:12:01.000000000 +0100
+--- a/storage/myisam/mi_check.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_check.c	2013-10-08 15:12:01.000000000 +0100
 @@ -1159,7 +1159,7 @@
-    if (param->testflag & (T_EXTEND | T_MEDIUM | T_VERBOSE))
-    {
-      if (_mi_rec_check(info,record, info->rec_buff,block_info.rec_len,
+ 	  if (param->testflag & (T_EXTEND | T_MEDIUM | T_VERBOSE))
+ 	  {
+ 	    if (_mi_rec_check(info,record, info->rec_buff,block_info.rec_len,
 -                              test(info->s->calc_checksum)))
 +                              mysql_test(info->s->calc_checksum)))
-      {
-        mi_check_print_error(param,"Found wrong packed record at %s",
-        llstr(start_recpos,llbuff));
+ 	    {
+ 	      mi_check_print_error(param,"Found wrong packed record at %s",
+ 			  llstr(start_recpos,llbuff));
 @@ -2386,7 +2386,7 @@
        if (keyseg[i].flag & HA_SPACE_PACK)
-  sort_param.key_length+=get_pack_length(keyseg[i].length);
+ 	sort_param.key_length+=get_pack_length(keyseg[i].length);
        if (keyseg[i].flag & (HA_BLOB_PART | HA_VAR_LENGTH_PART))
-- sort_param.key_length+=2 + test(keyseg[i].length >= 127);
-+ sort_param.key_length+=2 + mysql_test(keyseg[i].length >= 127);
+-	sort_param.key_length+=2 + test(keyseg[i].length >= 127);
++	sort_param.key_length+=2 + mysql_test(keyseg[i].length >= 127);
        if (keyseg[i].flag & HA_NULL_PART)
-  sort_param.key_length++;
+ 	sort_param.key_length++;
      }
 @@ -2877,7 +2877,7 @@
        if (keyseg->flag & HA_SPACE_PACK)
@@ -2572,18 +2572,18 @@ diff -ur a/storage/myisam/mi_check.c b/storage/myisam/mi_check.c
                              sort_param->calc_checksum &&
 -                            test(info->s->calc_checksum)))
 +                            mysql_test(info->s->calc_checksum)))
-    {
-      mi_check_print_info(param,"Found wrong packed record at %s",
-        llstr(sort_param->start_recpos,llbuff));
+ 	  {
+ 	    mi_check_print_info(param,"Found wrong packed record at %s",
+ 				llstr(sort_param->start_recpos,llbuff));
 @@ -3722,7 +3722,7 @@
  
        do
        {
-- block_length=reclength+ 3 + test(reclength >= (65520-3));
-+ block_length=reclength+ 3 + mysql_test(reclength >= (65520-3));
-  if (block_length < share->base.min_block_length)
-    block_length=share->base.min_block_length;
-  info->update|=HA_STATE_WRITE_AT_END;
+-	block_length=reclength+ 3 + test(reclength >= (65520-3));
++	block_length=reclength+ 3 + mysql_test(reclength >= (65520-3));
+ 	if (block_length < share->base.min_block_length)
+ 	  block_length=share->base.min_block_length;
+ 	info->update|=HA_STATE_WRITE_AT_END;
 @@ -4641,7 +4641,7 @@
    const uchar *end=buf+length;
    for (crc=0; buf != end; buf++)
@@ -2594,17 +2594,17 @@ diff -ur a/storage/myisam/mi_check.c b/storage/myisam/mi_check.c
  }
  
 diff -ur a/storage/myisam/mi_create.c b/storage/myisam/mi_create.c
---- a/storage/myisam/mi_create.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_create.c  2013-10-08 15:12:01.000000000 +0100
+--- a/storage/myisam/mi_create.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_create.c	2013-10-08 15:12:01.000000000 +0100
 @@ -134,7 +134,7 @@
-  pack_reclength++;
+ 	pack_reclength++;
          min_pack_length++;
          /* We must test for 257 as length includes pack-length */
 -        if (test(rec->length >= 257))
 +        if (mysql_test(rec->length >= 257))
-  {
-    long_varchar_count++;
-    pack_reclength+= 2;     /* May be packed on 3 bytes */
+ 	{
+ 	  long_varchar_count++;
+ 	  pack_reclength+= 2;			/* May be packed on 3 bytes */
 @@ -193,7 +193,7 @@
    packed=(packed+7)/8;
    if (pack_reclength != INT_MAX32)
@@ -2624,56 +2624,56 @@ diff -ur a/storage/myisam/mi_create.c b/storage/myisam/mi_create.c
    share.base.min_pack_length=min_pack_length;
    share.base.pack_bits=packed;
 diff -ur a/storage/myisam/mi_delete.c b/storage/myisam/mi_delete.c
---- a/storage/myisam/mi_delete.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_delete.c  2013-10-08 15:12:02.000000000 +0100
+--- a/storage/myisam/mi_delete.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_delete.c	2013-10-08 15:12:02.000000000 +0100
 @@ -352,7 +352,7 @@
-  DBUG_RETURN(-1);
+ 	DBUG_RETURN(-1);
        }
        /* Page will be update later if we return 1 */
 -      DBUG_RETURN(test(length <= (info->quick_mode ? MI_MIN_KEYBLOCK_LENGTH :
 +      DBUG_RETURN(mysql_test(length <= (info->quick_mode ? MI_MIN_KEYBLOCK_LENGTH :
-          (uint) keyinfo->underflow_block_length)));
+ 				  (uint) keyinfo->underflow_block_length)));
      }
      save_flag=1;
 diff -ur a/storage/myisam/mi_dynrec.c b/storage/myisam/mi_dynrec.c
---- a/storage/myisam/mi_dynrec.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_dynrec.c  2013-10-08 15:12:02.000000000 +0100
+--- a/storage/myisam/mi_dynrec.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_dynrec.c	2013-10-08 15:12:02.000000000 +0100
 @@ -414,7 +414,7 @@
    {
      /* No deleted blocks;  Allocate a new block */
      *filepos=info->state->data_file_length;
 -    if ((tmp=reclength+3 + test(reclength >= (65520-3))) <
 +    if ((tmp=reclength+3 + mysql_test(reclength >= (65520-3))) <
-  info->s->base.min_block_length)
+ 	info->s->base.min_block_length)
        tmp= info->s->base.min_block_length;
      else
 @@ -862,7 +862,7 @@
        if (length < reclength)
        {
-  uint tmp=MY_ALIGN(reclength - length + 3 +
--       test(reclength >= 65520L),MI_DYN_ALIGN_SIZE);
-+       mysql_test(reclength >= 65520L),MI_DYN_ALIGN_SIZE);
-  /* Don't create a block bigger than MI_MAX_BLOCK_LENGTH */
-  tmp= MY_MIN(length+tmp, MI_MAX_BLOCK_LENGTH)-length;
-  /* Check if we can extend this block */
+ 	uint tmp=MY_ALIGN(reclength - length + 3 +
+-			  test(reclength >= 65520L),MI_DYN_ALIGN_SIZE);
++			  mysql_test(reclength >= 65520L),MI_DYN_ALIGN_SIZE);
+ 	/* Don't create a block bigger than MI_MAX_BLOCK_LENGTH */
+ 	tmp= MY_MIN(length+tmp, MI_MAX_BLOCK_LENGTH)-length;
+ 	/* Check if we can extend this block */
 @@ -1023,7 +1023,7 @@
-      pos++;
-  }
-  new_length=(uint) (end-pos);
-- if (new_length +1 + test(rec->length > 255 && new_length > 127)
-+ if (new_length +1 + mysql_test(rec->length > 255 && new_length > 127)
-      < length)
-  {
-    if (rec->length > 255 && new_length > 127)
+ 	    pos++;
+ 	}
+ 	new_length=(uint) (end-pos);
+-	if (new_length +1 + test(rec->length > 255 && new_length > 127)
++	if (new_length +1 + mysql_test(rec->length > 255 && new_length > 127)
+ 	    < length)
+ 	{
+ 	  if (rec->length > 255 && new_length > 127)
 @@ -1143,7 +1143,7 @@
-      pos++;
-  }
-  new_length=(uint) (end-pos);
-- if (new_length +1 + test(rec->length > 255 && new_length > 127)
-+ if (new_length +1 + mysql_test(rec->length > 255 && new_length > 127)
-      < length)
-  {
-    if (!(flag & bit))
+ 	    pos++;
+ 	}
+ 	new_length=(uint) (end-pos);
+-	if (new_length +1 + test(rec->length > 255 && new_length > 127)
++	if (new_length +1 + mysql_test(rec->length > 255 && new_length > 127)
+ 	    < length)
+ 	{
+ 	  if (!(flag & bit))
 @@ -1195,7 +1195,7 @@
      else
        to+= length;
@@ -2684,29 +2684,29 @@ diff -ur a/storage/myisam/mi_dynrec.c b/storage/myisam/mi_dynrec.c
      goto err;
    if (with_checksum && ((uchar) info->checksum != (uchar) *to))
 diff -ur a/storage/myisam/mi_extra.c b/storage/myisam/mi_extra.c
---- a/storage/myisam/mi_extra.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_extra.c 2013-10-08 15:12:02.000000000 +0100
+--- a/storage/myisam/mi_extra.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_extra.c	2013-10-08 15:12:02.000000000 +0100
 @@ -55,7 +55,7 @@
      {
        reinit_io_cache(&info->rec_cache,READ_CACHE,0,
-          (pbool) (info->lock_type != F_UNLCK),
--         (pbool) test(info->update & HA_STATE_ROW_CHANGED)
-+         (pbool) mysql_test(info->update & HA_STATE_ROW_CHANGED)
-          );
+ 		      (pbool) (info->lock_type != F_UNLCK),
+-		      (pbool) test(info->update & HA_STATE_ROW_CHANGED)
++		      (pbool) mysql_test(info->update & HA_STATE_ROW_CHANGED)
+ 		      );
      }
      info->update= ((info->update & HA_STATE_CHANGED) | HA_STATE_NEXT_FOUND |
 @@ -116,7 +116,7 @@
      {
        reinit_io_cache(&info->rec_cache,READ_CACHE,info->nextpos,
-          (pbool) (info->lock_type != F_UNLCK),
--         (pbool) test(info->update & HA_STATE_ROW_CHANGED));
-+         (pbool) mysql_test(info->update & HA_STATE_ROW_CHANGED));
+ 		      (pbool) (info->lock_type != F_UNLCK),
+-		      (pbool) test(info->update & HA_STATE_ROW_CHANGED));
++		      (pbool) mysql_test(info->update & HA_STATE_ROW_CHANGED));
        info->update&= ~HA_STATE_ROW_CHANGED;
        if (share->concurrent_insert)
-  info->rec_cache.end_of_file=info->state->data_file_length;
+ 	info->rec_cache.end_of_file=info->state->data_file_length;
 diff -ur a/storage/myisam/mi_locking.c b/storage/myisam/mi_locking.c
---- a/storage/myisam/mi_locking.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_locking.c 2013-10-08 15:12:02.000000000 +0100
+--- a/storage/myisam/mi_locking.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_locking.c	2013-10-08 15:12:02.000000000 +0100
 @@ -567,5 +567,5 @@
      if (!lock_error)
        lock_error=mi_lock_database(info,old_lock);
@@ -2715,20 +2715,20 @@ diff -ur a/storage/myisam/mi_locking.c b/storage/myisam/mi_locking.c
 +  return mysql_test(lock_error || write_error);
  }
 diff -ur a/storage/myisam/mi_open.c b/storage/myisam/mi_open.c
---- a/storage/myisam/mi_open.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_open.c  2013-10-08 15:12:03.000000000 +0100
+--- a/storage/myisam/mi_open.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_open.c	2013-10-08 15:12:03.000000000 +0100
 @@ -510,7 +510,7 @@
        info.s=share;
        if (_mi_read_pack_info(&info,
-           (pbool)
--          test(!(share->options &
-+          mysql_test(!(share->options &
-            (HA_OPTION_PACK_RECORD |
-             HA_OPTION_TEMP_COMPRESS_RECORD)))))
-  goto err;
+ 			     (pbool)
+-			     test(!(share->options &
++			     mysql_test(!(share->options &
+ 				    (HA_OPTION_PACK_RECORD |
+ 				     HA_OPTION_TEMP_COMPRESS_RECORD)))))
+ 	goto err;
 diff -ur a/storage/myisam/mi_search.c b/storage/myisam/mi_search.c
---- a/storage/myisam/mi_search.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_search.c  2013-10-08 15:12:03.000000000 +0100
+--- a/storage/myisam/mi_search.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_search.c	2013-10-08 15:12:03.000000000 +0100
 @@ -82,7 +82,7 @@
    }
  
@@ -2748,49 +2748,49 @@ diff -ur a/storage/myisam/mi_search.c b/storage/myisam/mi_search.c
      keypos=buff+(keypos-old_buff);
      maxpos=buff+(maxpos-old_buff);
 diff -ur a/storage/myisam/mi_test1.c b/storage/myisam/mi_test1.c
---- a/storage/myisam/mi_test1.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/mi_test1.c 2013-10-08 15:12:03.000000000 +0100
+--- a/storage/myisam/mi_test1.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/mi_test1.c	2013-10-08 15:12:03.000000000 +0100
 @@ -265,14 +265,14 @@
-  if (verbose || (flags[j] >= 1 ||
-      (error && my_errno != HA_ERR_KEY_NOT_FOUND)))
-    printf("key: '%.*s'  mi_rkey:  %3d  errno: %3d\n",
--    (int) key_length,key+test(null_fields),error,my_errno);
-+    (int) key_length,key+mysql_test(null_fields),error,my_errno);
+ 	if (verbose || (flags[j] >= 1 ||
+ 			(error && my_errno != HA_ERR_KEY_NOT_FOUND)))
+ 	  printf("key: '%.*s'  mi_rkey:  %3d  errno: %3d\n",
+-		 (int) key_length,key+test(null_fields),error,my_errno);
++		 (int) key_length,key+mysql_test(null_fields),error,my_errno);
        }
        else
        {
-  error=mi_delete(file,read_record);
-  if (verbose || error)
-    printf("key: '%.*s'  mi_delete: %3d  errno: %3d\n",
--    (int) key_length, key+test(null_fields), error, my_errno);
-+    (int) key_length, key+mysql_test(null_fields), error, my_errno);
-  if (! error)
-  {
-    deleted++;
+ 	error=mi_delete(file,read_record);
+ 	if (verbose || error)
+ 	  printf("key: '%.*s'  mi_delete: %3d  errno: %3d\n",
+-		 (int) key_length, key+test(null_fields), error, my_errno);
++		 (int) key_length, key+mysql_test(null_fields), error, my_errno);
+ 	if (! error)
+ 	{
+ 	  deleted++;
 @@ -293,7 +293,7 @@
-  (error && (flags[i] != 0 || my_errno != HA_ERR_KEY_NOT_FOUND)))
+ 	(error && (flags[i] != 0 || my_errno != HA_ERR_KEY_NOT_FOUND)))
      {
        printf("key: '%.*s'  mi_rkey: %3d  errno: %3d  record: %s\n",
--      (int) key_length,key+test(null_fields),error,my_errno,record+1);
-+      (int) key_length,key+mysql_test(null_fields),error,my_errno,record+1);
+-	     (int) key_length,key+test(null_fields),error,my_errno,record+1);
++	     (int) key_length,key+mysql_test(null_fields),error,my_errno,record+1);
      }
    }
  
 diff -ur a/storage/myisam/myisamchk.c b/storage/myisam/myisamchk.c
---- a/storage/myisam/myisamchk.c  2013-07-10 17:17:27.000000000 +0100
-+++ b/storage/myisam/myisamchk.c  2013-10-08 15:12:03.000000000 +0100
+--- a/storage/myisam/myisamchk.c	2013-07-10 17:17:27.000000000 +0100
++++ b/storage/myisam/myisamchk.c	2013-10-08 15:12:03.000000000 +0100
 @@ -1118,7 +1118,7 @@
    if ((param->testflag & T_AUTO_INC) ||
        ((param->testflag & T_REP_ANY) && info->s->base.auto_key))
      update_auto_increment_key(param, info,
--           (my_bool) !test(param->testflag & T_AUTO_INC));
-+           (my_bool) !mysql_test(param->testflag & T_AUTO_INC));
+-			      (my_bool) !test(param->testflag & T_AUTO_INC));
++			      (my_bool) !mysql_test(param->testflag & T_AUTO_INC));
  
    if (!(param->testflag & T_DESCRIPT))
    {
 diff -ur a/strings/decimal.c b/strings/decimal.c
---- a/strings/decimal.c 2013-07-10 17:17:26.000000000 +0100
-+++ b/strings/decimal.c 2013-10-08 15:12:03.000000000 +0100
+--- a/strings/decimal.c	2013-07-10 17:17:26.000000000 +0100
++++ b/strings/decimal.c	2013-10-08 15:12:03.000000000 +0100
 @@ -353,7 +353,7 @@
    if (!(intg_len= fixed_precision ? fixed_intg : intg))
      intg_len= 1;
@@ -2810,8 +2810,8 @@ diff -ur a/strings/decimal.c b/strings/decimal.c
    *to_len= len;
    s[len]= 0;
 diff -ur a/vio/vio.c b/vio/vio.c
---- a/vio/vio.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/vio/vio.c 2013-10-08 15:12:03.000000000 +0100
+--- a/vio/vio.c	2013-07-10 17:17:27.000000000 +0100
++++ b/vio/vio.c	2013-10-08 15:12:03.000000000 +0100
 @@ -202,7 +202,7 @@
    if (old_vio.write_timeout >= 0)
      ret|= vio_timeout(vio, 1, old_vio.write_timeout);
@@ -2822,8 +2822,8 @@ diff -ur a/vio/vio.c b/vio/vio.c
  
  
 diff -ur a/vio/viosocket.c b/vio/viosocket.c
---- a/vio/viosocket.c 2013-07-10 17:17:27.000000000 +0100
-+++ b/vio/viosocket.c 2013-10-08 15:12:04.000000000 +0100
+--- a/vio/viosocket.c	2013-07-10 17:17:27.000000000 +0100
++++ b/vio/viosocket.c	2013-10-08 15:12:04.000000000 +0100
 @@ -854,16 +854,16 @@
    switch (event)
    {
@@ -2873,5 +2873,4 @@ index 00f42c0..c9e8fc4 100644
 -  DBUG_RETURN(test(res));
 +  DBUG_RETURN(mysql_test(res));
  }
- 
  
