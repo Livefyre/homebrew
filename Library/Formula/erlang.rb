@@ -68,10 +68,6 @@ class Erlang < Formula
     ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"
 
-    unless build.include? 'no-docs'
-      (lib/'erlang').install resource('man').files('man')
-      doc.install resource('html')
-    end
   end
 
   def caveats; <<-EOS.undent
