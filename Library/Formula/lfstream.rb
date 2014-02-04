@@ -11,8 +11,6 @@ class Lfstream < Formula
   def install
     dir = (prefix + 'sconf.lfstream')
     dir.mkpath
-    (dir + 'servers.conf').write servers
-    (dir + 'group.conf').write program_group
     libexec.install Dir["*.jar", "*.xml"]
     share.install dir
     (bin + 'runserver').write <<-EOS.undent
@@ -37,57 +35,6 @@ class Lfstream < Formula
         -Dlogback.configurationFile=#{libexec}/logback.xml \
         -cp #{libexec}/perseids-#{version}-jar-with-dependencies.jar \
          com.livefyre.perseids.server.Run
-    EOS
-  end
-
-  def program_group
-    return <<-EOS
-[group:stream]
-programs=ct,mq2,mq
-priority=500
-    EOS
-  end
-
-  def servers
-    return <<-EOS
-[program:ct]
-command = #{bin}/runserver
-redirect_stderr=True
-process_name = ct
-directory = #{prefix}
-priority = 999
-autorestart = false
-autostart = false
-stopsignal = KILL
-killasgroup = true
-user = #{ENV['USER']}
-environment = USER=#{ENV['USER']}
-
-[program:mq2]
-command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue_v2 --workers=1 --reqlimit=100000 --disable-wal
-redirect_stderr=True
-process_name = mq2
-directory = #{ENV['HOME']}/dev/lfdj/lfbootstrap
-priority = 999
-autorestart = false
-autostart = false
-stopsignal = KILL
-killasgroup = true
-user = #{ENV['USER']}
-environment = USER=#{ENV['USER']}
-
-[program:mq]
-command = #{ENV['HOME']}/dev/lfdj/lfbootstrap/bin/django run_mqueue --workers=1 --reqlimit=100000 --disable-wal --redishost=localhost
-redirect_stderr=True
-process_name = mq
-directory = #{ENV['HOME']}/dev/lfdj/lfbootstrap
-priority = 999
-autorestart = false
-autostart = false
-stopsignal = KILL
-killasgroup = true
-user = #{ENV['USER']}
-environment = USER=#{ENV['USER']}
     EOS
   end
 end
